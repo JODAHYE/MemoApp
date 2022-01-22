@@ -11,7 +11,6 @@ const MemoWriteContainer = () => {
   const [optionColor, setOptionColor] = useState('#8C8C8C');
   const dispatch = useDispatch();
   const {categories, category} = useSelector(state=>state.category);
-  // const [folder, setFolder] = useState('');
   useEffect(()=>{
     dispatch(list_category(user._id))
     dispatch(init_category());

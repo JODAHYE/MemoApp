@@ -16,7 +16,6 @@ const initialState = {
 }
 
 export default function menuReducer(state=initialState, action){
-  console.log(action, state);
   switch(action.type){
     case LIST:
       return {menu: '내 메모지'}

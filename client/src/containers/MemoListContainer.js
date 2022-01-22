@@ -114,7 +114,6 @@ const MemoListContainer = () => {
       skip: skip
     }
     if(category){
-      console.log('category',category);
       body.categoryId = await axios.get(`/api/category/${user._id}/${category}`).then(res=>{
         return res.data.id;
       })

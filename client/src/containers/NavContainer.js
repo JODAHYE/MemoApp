@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import Nav from '../components/Nav';
 import { init_category } from '../modules/category';
 import { menu_list, menu_write } from '../modules/menu';
-import { init_skip, set_color } from '../modules/post';
 import { logout } from '../modules/user';
 
 const NavContainer = () => {
@@ -13,9 +12,6 @@ const NavContainer = () => {
   const dispatch = useDispatch();
   
   const onLogout = useCallback(() => {
-    dispatch(init_category());
-    dispatch(init_skip());
-    dispatch(set_color(''));
     dispatch(logout());
     navigate('/');
   }, []);

@@ -74,7 +74,7 @@ const Category = ({onFolderToggle, isFolderOpen, onAllFolders, categories, onFol
     <Wrap view={isFolderOpen?'block':'none'}>
       <Folder>
         <FolderItem onClick={onAllFolders}>전체보기</FolderItem>
-        {categories.map((v, i)=><FolderItem onClick={onFolderClick} key={i}>{v}</FolderItem>)}
+        {(categories && categories.length>0) && categories.map((v, i)=><FolderItem onClick={onFolderClick} key={i}>{v}</FolderItem>)}
       </Folder>
       {(!add&&!remove)&&<><AddBtn onClick={onAddClick} /><RemoveBtn onClick={onRemoveClick} /></>}
       {add&&<><Input onChange={onChangeInput} value={value}/> 

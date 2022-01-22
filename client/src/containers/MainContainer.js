@@ -14,13 +14,13 @@ const Wrap = styled.div`
 `;
 const MainContainer = () => {
   const navigate = useNavigate();
-  const {isLogin, user} = useSelector(state=>state.user); 
+  const {isLogin} = useSelector(state=>state.user); 
   useEffect(()=>{
     const code = new URL(window.location.href).searchParams.get("code");
-    if(isLogin && user){
+    if(isLogin){
       navigate('/');
     }
-  },[isLogin, user])
+  },[isLogin])
   return (
     <>
       {isLogin ? <MemoPageContainer />:<Wrap><LoginContainer /></Wrap>}

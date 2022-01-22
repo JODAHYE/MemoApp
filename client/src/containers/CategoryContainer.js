@@ -13,8 +13,8 @@ const CategoryContainer = ({isFolderOpen, onFolderToggle}) => {
   const {user} = useSelector(state=>state.user); 
   const {categories} = useSelector(state=>state.category);
   useEffect(()=>{
-    dispatch(list_category(user._id))
-  }, []);
+    if(user) dispatch(list_category(user._id));
+  }, [user]);
 
   const onChangeInput = useCallback( e => {
     setValue(e.target.value);

@@ -129,7 +129,7 @@ const SubmitBtn = styled.input`
   }
   
 `;
-const MemoWrite = ({folders, optionColor, onOptionClick, onOptionBasic,
+const MemoWrite = ({categories, optionColor, onOptionClick, onOptionBasic,
    title, content, onChangeTitle, onChangeContent, onSubmit, onSelect}) => {
   return (
     <Wrap>
@@ -140,7 +140,7 @@ const MemoWrite = ({folders, optionColor, onOptionClick, onOptionBasic,
         <OptionBasic onClick={onOptionBasic} />
         <SelectBox onChange={onSelect}>
           <FolderSelect value=''>지정안함</FolderSelect>
-          {folders.map((v, i)=><FolderSelect key={i} value={v}>{v}</FolderSelect>)}
+          {categories.map((v, i)=><FolderSelect key={i} value={v}>{v}</FolderSelect>)}
         </SelectBox>
       </Option>
       <Form>

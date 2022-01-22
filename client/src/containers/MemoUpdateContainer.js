@@ -11,18 +11,12 @@ const UpdateContainer = ({memo, setIsUpdate}) => {
   const [content, setContent] = useState(memo.content);
   const [optionColor, setOptionColor] = useState(memo.color);
   const [index, setIndex] = useState(0);
-  const [folders, setFolders] = useState([]);
+  const {categories} = useSelector(state=>state.category);
   const [folder, setFolder] = useState('');
   const dispatch = useDispatch();
   const colorArr = ['#8C8C8C', '#EB6D8E', '#E9D96C', '#7E69DF'];
   useEffect(()=>{
-    dispatch(list_category(user.id)).then(res=>{
-      let arr = [];
-      res.data.categories.map((v, i)=>{
-        arr.push(v.name);
-      })
-      setFolders(folders.concat(arr));
-    });
+    dispatch(list_category(user._id));
   }, []);
 
   const onChangeTitle = useCallback(e => {
@@ -58,7 +52,7 @@ const UpdateContainer = ({memo, setIsUpdate}) => {
     }
     
     if(folder){
-      axios.get(`/api/category/${user.id}/${folder}`).then(async res=>{
+      axios.get(`/api/category/${user._id}/${folder}`).then(async res=>{
         body.category = await res.data.id;
         dispatch(update_memo(body));
       })
@@ -70,7 +64,7 @@ const UpdateContainer = ({memo, setIsUpdate}) => {
 
 
   return (
-    <MemoUpdate onSelect={onSelect} folders={folders} optionColor={optionColor} title={title} onChangeTitle={onChangeTitle} 
+    <MemoUpdate onSelect={onSelect} categories={categories} optionColor={optionColor} title={title} onChangeTitle={onChangeTitle} 
     onChangeContent={onChangeContent} content={content} onOptionClick={onOptionClick} 
     onSubmit={onSubmit} />
   );

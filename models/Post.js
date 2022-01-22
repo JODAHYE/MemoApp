@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 const postSchema = new Schema({
   userId: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    ref: 'user',
     required: true,
   },
   title: {
@@ -18,17 +19,13 @@ const postSchema = new Schema({
     type: String,
     default: '#659B91'
   },
-  // images:{
-  //   type: Array,
-  //   default: []
-  // },
   content:{
     type: String,
     required: true
   },
   category:{
     type: Schema.Types.ObjectId,
-    ref: 'post',
+    ref: 'category',
   },
 });
 module.exports = mongoose.model('Post', postSchema);

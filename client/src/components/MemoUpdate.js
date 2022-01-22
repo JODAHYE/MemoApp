@@ -83,7 +83,7 @@ const SelectBox = styled.select`
 const FolderSelect = styled.option`
   font-size: 12px;
 `;
-const MemoUpdate = ({onSelect, folders, optionColor, title, onChangeTitle, onChangeContent, 
+const MemoUpdate = ({onSelect, categories, optionColor, title, onChangeTitle, onChangeContent, 
   content, onOptionClick, onSubmit}) => {
   return (
     <Wrap color={optionColor}>
@@ -91,7 +91,7 @@ const MemoUpdate = ({onSelect, folders, optionColor, title, onChangeTitle, onCha
         <Title type="text" placeholder="제목을 입력하세요" value={title} onChange={onChangeTitle} />
         <SelectBox onChange={onSelect}>
             <FolderSelect>변경안함</FolderSelect>
-            {folders.map((v, i)=><FolderSelect key={i} value={v}>{v}</FolderSelect>)}
+            {categories.map((v, i)=><FolderSelect key={i} value={v}>{v}</FolderSelect>)}
         </SelectBox>
         <Content placeholder="내용" value={content} onChange={onChangeContent} />
         <RowBox>

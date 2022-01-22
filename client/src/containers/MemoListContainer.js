@@ -110,11 +110,12 @@ const MemoListContainer = () => {
   const get_memos = async ()=>{
     if(color) dispatch(set_color(''));
     let body = {
-      userId: user.id,
+      userId: user._id,
       skip: skip
     }
     if(category){
-      body.categoryId = await axios.get(`/api/category/${user.id}/${category}`).then(res=>{
+      console.log('category',category);
+      body.categoryId = await axios.get(`/api/category/${user._id}/${category}`).then(res=>{
         return res.data.id;
       })
     }else body.categoryId = 'all';
@@ -127,12 +128,12 @@ const MemoListContainer = () => {
 
   const get_memos_color = async () => {
     let body = {
-      userId: user.id,
+      userId: user._id,
       color: color,
       skip: colorSkip
     } 
     if(category){
-      body.categoryId = await axios.get(`/api/category/${user.id}/${category}`).then(res=>{
+      body.categoryId = await axios.get(`/api/category/${user._id}/${category}`).then(res=>{
         return res.data.id;
       })  
     }else body.categoryId = 'all';

@@ -11,16 +11,9 @@ const CategoryContainer = ({isFolderOpen, onFolderToggle}) => {
   const [value, setValue] = useState('');
   const dispatch = useDispatch();
   const {user} = useSelector(state=>state.user); 
-  const [folders, setFolders] = useState([]);
-
+  const {categories} = useSelector(state=>state.category);
   useEffect(()=>{
-    dispatch(list_category(user.id)).then(res=>{
-      let arr = [];
-      res.data.categories.map(v=>{
-        arr.push(v.name);
-      })
-      setFolders(folders.concat(arr));
-    });
+    dispatch(list_category(user._id))
   }, []);
 
   const onChangeInput = useCallback( e => {
@@ -44,7 +37,7 @@ const CategoryContainer = ({isFolderOpen, onFolderToggle}) => {
   }
   const onAdd = useCallback(() =>{
     let body = {
-      userId: user.id,
+      userId: user._id,
       name: value
     }
     if(!value){
@@ -60,16 +53,18 @@ const CategoryContainer = ({isFolderOpen, onFolderToggle}) => {
       if(res.data.isExist){
         return alert('이미 존재하는 폴더입니다');
       }
-      setFolders(folders.concat(res.data.category.name));
+      dispatch(list_category(user._id));
       setValue('');
     });
-  },[folders, value]);
+  },[value]);
+
   const onRemoveClick = useCallback(() => {
     setRemove(true);
   },[remove]);
   const onRemove = useCallback(() => {
-    dispatch(delete_category(user.id, value));
+    dispatch(delete_category(user._id, value));
   }, [value]);
+
   const onFolderClick = useCallback(e => {
     dispatch(select_category(e.target.innerHTML));
     dispatch(init_skip());
@@ -85,8 +80,8 @@ const CategoryContainer = ({isFolderOpen, onFolderToggle}) => {
 
   return (
     <div>
-      <Category onFolderToggle={onFolderToggle} isFolderOpen={isFolderOpen} onAllFolders={onAllFolders} onFolderClick={onFolderClick} value={value} folders={folders} onAdd={onAdd} onChangeInput={onChangeInput} 
-      onAddClick={onAddClick} onCancel={onCancel} onRemoveClick={onRemoveClick} 
+      <Category onFolderToggle={onFolderToggle} isFolderOpen={isFolderOpen} onAllFolders={onAllFolders} onFolderClick={onFolderClick} value={value} categories={categories}
+      onAdd={onAdd} onChangeInput={onChangeInput} onAddClick={onAddClick} onCancel={onCancel} onRemoveClick={onRemoveClick} 
       add={add} remove={remove} onRemove={onRemove}/>
     </div>
   );

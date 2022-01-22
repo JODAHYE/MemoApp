@@ -11,15 +11,14 @@ router.post('/save', (req, res)=>{
 
 router.get('/list/:userId/:categoryId/:skip', (req, res)=>{
   const skip = parseInt(req.params.skip);
-  console.log(skip);
   if(req.params.categoryId==='all'){
     Post.find({userId: req.params.userId}).sort({date: -1}).skip(skip).limit(6).exec((err, posts)=>{
-      if(err) return res.status(500).json({msg: err});
+      if(err) return res.status(504).json({msg: err});
       return res.status(200).json({posts});
     });
   }else{
     Post.find({userId: req.params.userId, category: req.params.categoryId}).sort({date: -1}).skip(skip).limit(6).exec((err, posts)=>{
-      if(err) return res.status(500).json({msg: err});
+      if(err) return res.status(504).json({msg: err});
       return res.status(200).json({posts});
     })
   }

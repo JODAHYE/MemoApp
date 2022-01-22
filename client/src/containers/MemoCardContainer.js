@@ -12,7 +12,7 @@ const MemoCardContainer = ({memo}) => {
     if(e.target.innerHTML==='수정'){
       setIsUpdate(true);
     }else{
-      dispatch(delete_memo(user.id, memo.title, memo._id));
+      dispatch(delete_memo(user._id, memo.title, memo._id));
     }
   },[]);
   const onDetail = useCallback(() => {

@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import MemoWrite from '../components/MemoWrite';
-import { list_category } from '../modules/category';
+import { init_category, list_category, select_category } from '../modules/category';
 import { write_memo } from '../modules/post';
 const MemoWriteContainer = () => {
   const {user} = useSelector(state=>state.user);
@@ -10,16 +10,11 @@ const MemoWriteContainer = () => {
   const [content, setContent] = useState('');
   const [optionColor, setOptionColor] = useState('#8C8C8C');
   const dispatch = useDispatch();
-  const [folders, setFolders] = useState([]);
-  const [folder, setFolder] = useState('');
+  const {categories, category} = useSelector(state=>state.category);
+  // const [folder, setFolder] = useState('');
   useEffect(()=>{
-    dispatch(list_category(user.id)).then(res=>{
-      let arr = [];
-      res.data.categories.map((v, i)=>{
-        arr.push(v.name);
-      })
-      setFolders(folders.concat(arr));
-    });
+    dispatch(list_category(user._id))
+    dispatch(init_category());
   }, []);
   const onChangeTitle = useCallback(e => {
     setTitle(e.target.value);
@@ -34,8 +29,8 @@ const MemoWriteContainer = () => {
     setOptionColor('#8C8C8C');
   }, [optionColor]);
   const onSelect = useCallback (e=> {
-    setFolder(e.target.value);
-  }, [folder]);
+    dispatch(select_category(e.target.value));
+  }, [category]);
   const onSubmit = useCallback(e => {
     e.preventDefault();
     if(!title || !content){
@@ -45,23 +40,24 @@ const MemoWriteContainer = () => {
       return alert('제목은 최대 50글자 입력 가능합니다')
     }
     let body = {
-      userId: String(user.id),
+      userId: user._id,
       title: title,
       content: content, 
       color: optionColor,
     }
-    if(folder){
-      axios.get(`/api/category/${user.id}/${folder}`).then(async res=>{
+
+    if(category){
+      axios.get(`/api/category/${user._id}/${category}`).then(async res=>{
         body.category = await res.data.id;
         dispatch(write_memo(body));
       })
     }else{
       dispatch(write_memo(body)); 
     }
-  }, [title, content, optionColor, folder, user]);
+  }, [title, content, optionColor, user]);
 
   return (
-    <MemoWrite folders={folders} optionColor={optionColor} onOptionClick={onOptionClick} 
+    <MemoWrite categories={categories} optionColor={optionColor} onOptionClick={onOptionClick} 
     onOptionBasic={onOptionBasic} title={title} content={content} onChangeTitle={onChangeTitle}
      onChangeContent={onChangeContent} onSubmit={onSubmit} onSelect={onSelect} />
   );

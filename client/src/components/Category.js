@@ -69,12 +69,12 @@ const Dark = styled.div`
   background: #000;
   opacity: 0.7;
 }`;
-const Category = ({onFolderToggle, isFolderOpen, onAllFolders, folders, onFolderClick, onAddClick, onCancel, onAdd, add, value, onChangeInput, onRemoveClick, remove, onRemove}) => {
+const Category = ({onFolderToggle, isFolderOpen, onAllFolders, categories, onFolderClick, onAddClick, onCancel, onAdd, add, value, onChangeInput, onRemoveClick, remove, onRemove}) => {
   return (
     <Wrap view={isFolderOpen?'block':'none'}>
       <Folder>
         <FolderItem onClick={onAllFolders}>전체보기</FolderItem>
-        {folders.map((v, i)=><FolderItem onClick={onFolderClick} key={i}>{v}</FolderItem>)}
+        {categories.map((v, i)=><FolderItem onClick={onFolderClick} key={i}>{v}</FolderItem>)}
       </Folder>
       {(!add&&!remove)&&<><AddBtn onClick={onAddClick} /><RemoveBtn onClick={onRemoveClick} /></>}
       {add&&<><Input onChange={onChangeInput} value={value}/> 

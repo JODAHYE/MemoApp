@@ -33,15 +33,16 @@ export const get_info = () => dispatch => {
   window.Kakao.API.request({
     url: '/v2/user/me',
     success: async (response)=>{
-        await axios.post('/api/user/sign_up', {id: response.id, token: window.Kakao.Auth.getAccessToken()}).then(res=>{
-          console.log('msg: ', res.data, window.Kakao.Auth.getAccessToken());
-        })  //id가 디비에 없으면 저장
+      await axios.post('/api/user/sign_up', {id: response.id, token: window.Kakao.Auth.getAccessToken()}).then(res=>{
+        console.log('msg: ', res.data, window.Kakao.Auth.getAccessToken());
         const info = {
+          _id: res.data.user._id,
           id: response.id,
           name: response.properties.nickname,
           profile_image: response.properties.profile_image,
         }
         return dispatch(user_info(info));
+      })  //id가 디비에 없으면 저장
     },
     fail: function(error) {
         console.log(error);
@@ -81,7 +82,7 @@ export default function userReducer(state=initialState, action){
     case LOGIN:
       return {...state, isLogin: true, token: window.Kakao.Auth.getAccessToken()}
     case LOGOUT:
-      return {...state, isLogin: false, token: ''}
+      return {...state, isLogin: false, token: '', user: {}}
     case INFO: 
       return {...state, user: action.payload}
     default:

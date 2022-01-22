@@ -34,7 +34,6 @@ export const get_info = () => dispatch => {
     url: '/v2/user/me',
     success: async (response)=>{
       await axios.post('/api/user/sign_up', {id: response.id, token: window.Kakao.Auth.getAccessToken()}).then(res=>{
-        console.log('msg: ', res.data, window.Kakao.Auth.getAccessToken());
         const info = {
           _id: res.data.user._id,
           id: response.id,
@@ -62,9 +61,8 @@ export const logout = () => async dispatch => {
     console.log('Not logged in.');
     return;
   }
-  await axios.post('/api/user/logout', {token: window.Kakao.Auth.getAccessToken()});
+  await axios.get(`/api/user/logout/${window.Kakao.Auth.getAccessToken()}`);
   window.Kakao.Auth.logout(function() {
-    console.log(window.Kakao.Auth.getAccessToken());
     dispatch({type: LOGOUT});
   });
 }

@@ -3,8 +3,8 @@ const express = require('express');
 const User = require('../models/User');
 const router = express.Router();
 
-router.post('/logout', (req,res)=>{
-  User.findOneAndUpdate({token: req.body.token}, {token: ''}).exec((err, user)=>{
+router.get('/logout/:token', (req,res)=>{
+  User.findOneAndUpdate({token: req.params.token}, {token: ''}).exec((err, user)=>{
     if(err) return res.status(500).json({msg: err});
     return res.status(200).json({msg: '로그아웃', user});
   })

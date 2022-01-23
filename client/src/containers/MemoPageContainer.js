@@ -66,12 +66,15 @@ const MemoPageContainer = () => {
   const {post} = useSelector(state=>state.post);
   const [isFolderOpen, setIsFolderOpen] = useState(false);
   const dispatch = useDispatch();
-  const onClose = () => {
+
+  const onClose = useCallback(() => {
     if(isDetail) dispatch(set_memo(post));
-  }
+  }, [isDetail]);
+
   const onFolderToggle = useCallback(() => {
     setIsFolderOpen(!isFolderOpen)
   }, [isFolderOpen]);
+  
   return (  
     <Wrap>
       <NavContainer/>

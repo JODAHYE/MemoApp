@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import {MdCreateNewFolder} from 'react-icons/md';
 import {HiOutlineFolderRemove} from 'react-icons/hi';
+import '../font.css';
 const Wrap = styled.div`
   position: absolute;
   top: 0;
@@ -25,6 +26,7 @@ const FolderItem = styled.li`
   list-style-image: url( "img/folder.png" );
   font-size: 14px;
   cursor: pointer;
+  font-family: 'Sunflower', sans-serif;
   padding: 6px; 
   border-bottom:1px solid #6B6B6B;
 `;

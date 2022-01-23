@@ -1,12 +1,13 @@
 import axios from 'axios';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { color_filter, set_skip, init_skip, list_memo, set_color } from '../modules/post';
+import { color_filter, set_skip, list_memo, set_color } from '../modules/post';
 import Loader from './Loader';
 import MemoCardContainer from './MemoCardContainer';
 import {HiChevronLeft, HiChevronRight} from 'react-icons/hi';
 import {GrNote} from 'react-icons/gr';
+import '../font.css';
 const Wrap = styled.div`
   width: 60%;
   margin: 0 auto;
@@ -69,6 +70,7 @@ const Category = styled.p`
   top: -60px;
   font-size: 18px;
   margin: 14px;
+  font-family: 'Sunflower', sans-serif;
   border: 1px solid #fff;
   border-radius: 20%;
   padding: 8px;
@@ -145,18 +147,21 @@ const MemoListContainer = () => {
     setColorSkip(0);
     dispatch(set_color(slice));
   },[colorSkip]);
+
   const onNext = useCallback(() => {
     if(!color) dispatch(set_skip(skip+6));
     if(color) {
       setColorSkip(colorSkip+6);
     }
   }, [color, skip, colorSkip]);
+  
   const onPrev = useCallback(() => {
     if(!color && skip>5) dispatch(set_skip(skip-6));
     if(color && colorSkip>5) {
       setColorSkip(colorSkip-6);    
     }
   }, [color, skip, colorSkip]);
+
   return (
     <Wrap>
       <Category><NoteIcont />{category?category:'전체메모'}</Category>
@@ -178,4 +183,4 @@ const MemoListContainer = () => {
   );
 };
 
-export default MemoListContainer;
+export default memo(MemoListContainer);

@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { memo, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Nav from '../components/Nav';
@@ -30,4 +30,4 @@ const NavContainer = () => {
   );
 };
 
-export default NavContainer;
+export default memo(NavContainer);

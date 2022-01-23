@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Category from '../components/Category';
 import { create_category, delete_category, init_category, list_category, select_category } from '../modules/category';
@@ -13,19 +13,22 @@ const CategoryContainer = ({isFolderOpen, onFolderToggle}) => {
   const {user} = useSelector(state=>state.user); 
   const {categories} = useSelector(state=>state.category);
   useEffect(()=>{
-    if(user) dispatch(list_category(user._id));
-  }, [user]);
+    if(user._id) dispatch(list_category(user._id));
+  }, [user._id]);
 
   const onChangeInput = useCallback( e => {
     setValue(e.target.value);
   }, [value]);
+
   const onAddClick = useCallback(() => {
     setAdd(true);
   }, [add]);
+
   const onCancel = useCallback(() => {
     setAdd(false);
     setRemove(false);
   }, [add, remove]);
+
   const isCorrectStr = () =>{
     for(let i=0; i<value.length; i++){
       if(value.charCodeAt(i)>=21 && value.charCodeAt(i)<48) return false;
@@ -56,14 +59,15 @@ const CategoryContainer = ({isFolderOpen, onFolderToggle}) => {
       dispatch(list_category(user._id));
       setValue('');
     });
-  },[value]);
+  },[value, user._id]);
 
   const onRemoveClick = useCallback(() => {
     setRemove(true);
   },[remove]);
+
   const onRemove = useCallback(() => {
     dispatch(delete_category(user._id, value));
-  }, [value]);
+  }, [value, user._id]);
 
   const onFolderClick = useCallback(e => {
     dispatch(select_category(e.target.innerHTML));
@@ -71,6 +75,7 @@ const CategoryContainer = ({isFolderOpen, onFolderToggle}) => {
     dispatch(set_color(''));
     dispatch(menu_list());
   }, []);
+
   const onAllFolders = useCallback(() => {
     dispatch(init_category());
     dispatch(init_skip());
@@ -87,4 +92,4 @@ const CategoryContainer = ({isFolderOpen, onFolderToggle}) => {
   );
 };
 
-export default CategoryContainer;
+export default memo(CategoryContainer);

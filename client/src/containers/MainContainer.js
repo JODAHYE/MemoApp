@@ -4,14 +4,29 @@ import styled from 'styled-components';
 import MemoPageContainer from './MemoPageContainer';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import '../font.css';
 const Wrap = styled.div`
+  width: 100vw;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
   flex-direction: column;
-  background: #F0F0F0;
 `;
+const Title = styled.h2`
+  color: #000;
+  background: url('img/main.png') center center / cover no-repeat;
+  background-size: 500px;
+  width: 30%;
+  height: 30%;
+  font-family: 'Ubuntu', sans-serif;
+  text-align: center;
+  @media (min-width: 320px) and (max-width: 480px) {
+    width: 80%;
+    height: 35%;
+    font-weight: 400;  
+  }
+`
 const MainContainer = () => {
   const navigate = useNavigate();
   const {isLogin} = useSelector(state=>state.user); 
@@ -23,7 +38,7 @@ const MainContainer = () => {
   },[isLogin])
   return (
     <>
-      {isLogin ? <MemoPageContainer />:<Wrap><LoginContainer /></Wrap>}
+      {isLogin ? <MemoPageContainer />:<Wrap><Title>ColorIt</Title><LoginContainer /></Wrap>}
     </>
   );
 };

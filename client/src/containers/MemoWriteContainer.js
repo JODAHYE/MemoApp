@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import MemoWrite from '../components/MemoWrite';
 import { init_category, list_category, select_category } from '../modules/category';
@@ -64,4 +64,4 @@ const MemoWriteContainer = () => {
   );
 };
 
-export default MemoWriteContainer;
+export default memo(MemoWriteContainer);

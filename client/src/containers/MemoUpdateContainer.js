@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import MemoUpdate from '../components/MemoUpdate';
 import { list_category } from '../modules/category';
@@ -70,4 +70,4 @@ const UpdateContainer = ({memo, setIsUpdate}) => {
   );
 };
 
-export default UpdateContainer;
+export default memo(UpdateContainer);

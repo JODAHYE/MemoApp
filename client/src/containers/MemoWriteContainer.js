@@ -12,11 +12,11 @@ const MemoWriteContainer = () => {
   const dispatch = useDispatch();
   const {categories, category} = useSelector(state=>state.category);
   useEffect(()=>{
-    if(user){
+    if(user._id){
       dispatch(list_category(user._id))
       dispatch(init_category());  
     }
-  }, [user]);
+  }, [user._id]);
   const onChangeTitle = useCallback(e => {
     setTitle(e.target.value);
   }, [title]);

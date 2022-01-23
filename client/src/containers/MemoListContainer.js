@@ -99,13 +99,13 @@ const MemoListContainer = () => {
   const {color} = useSelector(state=>state.post);
 
   useEffect(()=>{
-    if(!color && user) get_memos();
-  },[category, skip, user]);
+    if(!color && user._id) get_memos();
+  },[category, skip, user._id]);
 
   useEffect(()=>{
-    if(color && user) get_memos_color();
-    if(!color && user) get_memos();
-  }, [color, colorSkip, user]);
+    if(color && user._id) get_memos_color();
+    if(!color && user._id) get_memos();
+  }, [color, colorSkip, user._id]);
 
   const get_memos = async ()=>{
     if(color) dispatch(set_color(''));

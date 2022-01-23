@@ -16,8 +16,8 @@ const UpdateContainer = ({memo, setIsUpdate}) => {
   const dispatch = useDispatch();
   const colorArr = ['#8C8C8C', '#EB6D8E', '#E9D96C', '#7E69DF'];
   useEffect(()=>{
-    if(user) dispatch(list_category(user._id));
-  }, [user]);
+    if(user._id) dispatch(list_category(user._id));
+  }, [user._id]);
 
   const onChangeTitle = useCallback(e => {
     setTitle(e.target.value);

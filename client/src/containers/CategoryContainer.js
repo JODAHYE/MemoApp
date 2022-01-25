@@ -29,6 +29,15 @@ const CategoryContainer = ({isFolderOpen, onFolderToggle}) => {
     setRemove(false);
   }, [add, remove]);
 
+  const isCorrectStr = () =>{
+    for(let i=0; i<value.length; i++){
+      if(value.charCodeAt(i)>=21 && value.charCodeAt(i)<48) return false;
+      if(value.charCodeAt(i)>=58 && value.charCodeAt(i)<65) return false;
+      if(value.charCodeAt(i)>=91 && value.charCodeAt(i)<97) return false;
+      if(value.charCodeAt(i)>=123 && value.charCodeAt(i)<127) return false;
+    }
+    return true; 
+  }
   const onAdd = useCallback(() =>{
     let body = {
       userId: user._id,
@@ -36,6 +45,9 @@ const CategoryContainer = ({isFolderOpen, onFolderToggle}) => {
     }
     if(!value){
       return alert('값을 입력해주세요');
+    }
+    if(!isCorrectStr()){
+      return alert('특수문자는 사용할 수 없습니다.');
     }
     if(value.length>18){
       return alert('폴더명은 18글자까지 입력할 수 있습니다 ');

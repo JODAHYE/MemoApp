@@ -12,13 +12,10 @@ const Wrap = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  background: linear-gradient(to bottom, #E3A5DB, #BFBFF2);
 `;
 const Title = styled.h2`
   color: #000;
-  background: url('img/main.png') center center / cover no-repeat;
-  background-size: 500px;
-  width: 30%;
-  height: 30%;
   font-family: 'Ubuntu', sans-serif;
   text-align: center;
   @media (min-width: 320px) and (max-width: 480px) {

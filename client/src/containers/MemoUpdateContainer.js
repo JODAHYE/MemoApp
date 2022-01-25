@@ -53,7 +53,7 @@ const UpdateContainer = ({memo, setIsUpdate}) => {
     
     if(folder){
       axios.get(`/api/category/${user._id}/${folder}`).then(async res=>{
-        body.category = await res.data.id;
+        body.category = await res.data.category._id;
         dispatch(update_memo(body));
       })
     }else{

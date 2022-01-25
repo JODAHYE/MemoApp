@@ -117,7 +117,7 @@ const MemoListContainer = () => {
     }
     if(category){
       body.categoryId = await axios.get(`/api/category/${user._id}/${category}`).then(res=>{
-        return res.data.id;
+        return res.data.category._id;
       })
     }else body.categoryId = 'all';
     const request = dispatch(list_memo(body));
@@ -135,7 +135,7 @@ const MemoListContainer = () => {
     } 
     if(category){
       body.categoryId = await axios.get(`/api/category/${user._id}/${category}`).then(res=>{
-        return res.data.id;
+        return res.data.category._id;
       })  
     }else body.categoryId = 'all';
     const arr = await dispatch(color_filter(body)).payload.then(arr=>arr);

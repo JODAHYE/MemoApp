@@ -49,7 +49,7 @@ const MemoWriteContainer = () => {
 
     if(category){
       axios.get(`/api/category/${user._id}/${category}`).then(async res=>{
-        body.category = await res.data.id;
+        body.category = await res.data.category._id;
         dispatch(write_memo(body));
       })
     }else{

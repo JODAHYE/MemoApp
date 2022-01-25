@@ -66,6 +66,9 @@ const CategoryContainer = ({isFolderOpen, onFolderToggle}) => {
   },[remove]);
 
   const onRemove = useCallback(() => {
+    dispatch(init_category());
+    dispatch(init_skip());
+    dispatch(set_color(''));
     dispatch(delete_category(user._id, value));
   }, [value, user._id]);
 

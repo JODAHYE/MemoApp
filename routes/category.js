@@ -41,7 +41,7 @@ router.delete('/delete/:userId/:name', (req, res)=>{
 router.get('/:userId/:name', (req, res)=>{
   Category.findOne({userId: req.params.userId, name: req.params.name}).exec((err, category)=>{
     if(err) return res.status(500).json({msg: err});
-    return res.status(200).json({msg: '카테고리 id', id: category._id});
+    return res.status(200).json({msg: '카테고리', category});
   })
 })
 

@@ -5,7 +5,7 @@ import Nav from '../components/Nav';
 import { init_category } from '../modules/category';
 import { menu_list, menu_write } from '../modules/menu';
 import { logout } from '../modules/user';
-
+import { init_skip, set_color } from '../modules/post';
 const NavContainer = () => {
   const {user} = useSelector(state=>state.user);
   const navigate = useNavigate();  

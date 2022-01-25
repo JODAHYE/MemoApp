@@ -23,6 +23,8 @@ const NavContainer = () => {
     if(e.target.innerText==='내 메모지'){
       dispatch(init_category());
       dispatch(menu_list());
+      dispatch(init_skip());
+      dispatch(set_color(''));  
     }
   },[]);
   return (

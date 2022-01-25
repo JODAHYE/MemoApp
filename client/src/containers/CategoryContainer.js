@@ -47,7 +47,7 @@ const CategoryContainer = ({isFolderOpen, onFolderToggle}) => {
       return alert('값을 입력해주세요');
     }
     if(!isCorrectStr()){
-      return alert('특수문자는 사용할 수 없습니다.');
+      return alert('특수문자는 사용할 수 없습니다. \n영문, 한글, 숫자, 이모티콘은 가능합니다.');
     }
     if(value.length>18){
       return alert('폴더명은 18글자까지 입력할 수 있습니다 ');

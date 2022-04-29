@@ -1,10 +1,106 @@
-import React from 'react';
-import styled from 'styled-components';
-import {RiCloseCircleFill} from 'react-icons/ri';
+import React, { useCallback, useEffect, useState } from "react";
+import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
+import { getCategoryList, setCategory } from "../modules/category";
+import { usePost } from "../hooks/usePost";
+import { customColor } from "../style/theme";
+import { setColor, setSkip } from "../modules/post";
+
+const MemoWrite = () => {
+  const dispatch = useDispatch();
+  const { writeMemo } = usePost();
+  const { categories } = useSelector((state) => state.category);
+  const [value, setValue] = useState({
+    title: "",
+    content: "",
+    color: "#8C8C8C",
+    category: "",
+  });
+
+  useEffect(() => {
+    dispatch(getCategoryList());
+  }, []);
+
+  const onChange = useCallback(
+    (e) => {
+      setValue({ ...value, [e.target.name]: e.target.value });
+    },
+    [value]
+  );
+
+  const onColorClick = useCallback(
+    (e) => {
+      setValue({ ...value, color: e.target.getAttribute("color") });
+    },
+    [value]
+  );
+
+  const onSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      if (!value.title || !value.content) {
+        return alert("Please enter a value");
+      }
+      writeMemo(value);
+      dispatch(setColor(""));
+      dispatch(setSkip(0));
+      dispatch(setCategory(""));
+    },
+    [value, writeMemo]
+  );
+
+  return (
+    <Wrap>
+      <Option color={value.color}>
+        <MemoColor color={customColor.red} onClick={onColorClick} />
+        <MemoColor color={customColor.yellow} onClick={onColorClick} />
+        <MemoColor color={customColor.purple} onClick={onColorClick} />
+        <MemoColorBasicBtn
+          onClick={() => {
+            setValue({ ...value, color: "#8C8C8C" });
+          }}
+        >
+          <Icon src="../../img/cancel-circle.svg" />
+        </MemoColorBasicBtn>
+        <SelectBox
+          onChange={(e) => {
+            setValue({ ...value, category: e.target.value });
+          }}
+        >
+          <CategorySelector value="">default</CategorySelector>
+          {categories.map((v, i) => (
+            <CategorySelector key={i} value={v.name}>
+              {v.name}
+            </CategorySelector>
+          ))}
+        </SelectBox>
+      </Option>
+      <Form onSubmit={onSubmit}>
+        <Title
+          type="text"
+          placeholder="Title"
+          name="title"
+          value={value.title}
+          onChange={onChange}
+        />
+        <Content
+          placeholder="Content"
+          name="content"
+          value={value.content}
+          onChange={onChange}
+        />
+        <SubmitBtn>Complete</SubmitBtn>
+      </Form>
+    </Wrap>
+  );
+};
+
+export default MemoWrite;
+
 const Wrap = styled.div`
   width: 600px;
   height: 600px;
-  box-shadow: 2px 2px 2px 2px #9D9D9B;
+  box-shadow: 2px 2px 2px 2px #b4b4b5;
   background: #eee;
   overflow: hidden;
   margin: 0 auto;
@@ -20,37 +116,34 @@ const Wrap = styled.div`
 const Option = styled.div`
   width: 100%;
   height: 10%;
-  background: ${props=>props.color};
-  display: flex; 
+  background: ${(props) => props.color};
+  display: flex;
   align-items: center;
   position: relative;
 `;
-const OptionColor = styled.span`
+const MemoColor = styled.span`
   margin: 0 10px;
   display: inline-block;
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: ${props=>props.color};
+  background: ${(props) => props.color};
   cursor: pointer;
-  &:hover{
-    opacity: 0.5;
-  }
-  @media (min-width: 375px) and (max-width: 480px) {
-    margin: 0 2px;
-  }
-`;
-const OptionBasic = styled(RiCloseCircleFill)`
-  font-size: 24px;
-  font-weight: 600;
-  cursor: pointer;
-  margin: 0 10px;
-  &:hover{
+  &:hover {
     opacity: 0.5;
   }
   @media (min-width: 320px) and (max-width: 480px) {
     margin: 0 2px;
   }
+`;
+const MemoColorBasicBtn = styled.button`
+  cursor: pointer;
+  border: none;
+  background: none;
+  outline: none;
+`;
+const Icon = styled.img`
+  width: 20px;
 `;
 const SelectBox = styled.select`
   outline: none;
@@ -58,15 +151,15 @@ const SelectBox = styled.select`
   font-size: 16px;
   position: absolute;
   right: 10px;
-  @media (min-width: 320px) and (max-width: 480px) {
-   font-size: 14px;
-   width: 50%;
-  }
-`;
-const FolderSelect = styled.option`
-  font-size: 16px;
+  width: 50%;
   @media (min-width: 320px) and (max-width: 480px) {
     font-size: 14px;
+  }
+`;
+const CategorySelector = styled.option`
+  font-size: 14px;
+  @media (min-width: 320px) and (max-width: 480px) {
+    font-size: 12px;
   }
 `;
 const Form = styled.form`
@@ -84,7 +177,7 @@ const Form = styled.form`
 const Title = styled.input`
   border: none;
   outline: none;
-  width: 70%;  
+  width: 70%;
   padding: 10px;
   font-size: 16px;
   @media (min-width: 320px) and (max-width: 374px) {
@@ -98,10 +191,10 @@ const Title = styled.input`
 const Content = styled.textarea`
   border: none;
   outline: none;
-  width: 70%;  
+  width: 70%;
   height: 70%;
   padding: 10px;
-  border-top: 1px solid #2F4858;
+  border-top: 1px solid #2f4858;
   @media (min-width: 320px) and (max-width: 374px) {
     width: 85%;
     height: 80%;
@@ -112,44 +205,18 @@ const Content = styled.textarea`
     height: 80%;
   }
 `;
-const SubmitBtn = styled.input`
+const SubmitBtn = styled.button`
+  outline: none;
   margin-top: 20px;
   border: none;
-  background: #B0AB99;
-  color: #fff;
   padding: 10px;
   cursor: pointer;
-  &:hover{
-    color: #000;
-    background: #fff;
+  background: ${customColor.button};
+  &:active {
+    background: ${customColor.buttonActive};
   }
   @media (min-width: 320px) and (max-width: 480px) {
     padding: 6px;
-    margin-top:10px;
+    margin-top: 10px;
   }
-  
 `;
-const MemoWrite = ({categories, optionColor, onOptionClick, onOptionBasic,
-   title, content, onChangeTitle, onChangeContent, onSubmit, onSelect}) => {
-  return (
-    <Wrap>
-      <Option color={optionColor}>
-        <OptionColor color={'#EB6D8E'} onClick={onOptionClick} />
-        <OptionColor color={'#E9D96C'} onClick={onOptionClick} />
-        <OptionColor color={'#7E69DF'} onClick={onOptionClick} />
-        <OptionBasic onClick={onOptionBasic} />
-        <SelectBox onChange={onSelect}>
-          <FolderSelect value=''>지정안함</FolderSelect>
-          {categories.map((v, i)=><FolderSelect key={i} value={v}>{v}</FolderSelect>)}
-        </SelectBox>
-      </Option>
-      <Form>
-        <Title type="text" placeholder="제목을 입력하세요" value={title} onChange={onChangeTitle}/>
-        <Content placeholder="내용" value={content} onChange={onChangeContent} />
-        <SubmitBtn type="submit" value="완료" onClick={onSubmit}/>
-      </Form>
-    </Wrap>
-  );
-};
-
-export default MemoWrite;

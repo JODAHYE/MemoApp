@@ -1,15 +1,15 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 const { Schema } = mongoose;
 const categorySchema = new Schema({
   userId: {
     type: Schema.Types.ObjectId,
-    ref: 'user',
+    ref: "user",
     required: true,
   },
-  name:{
+  name: {
     type: String,
-    maxlength: 18,
     required: true,
-  }
+  },
 });
-module.exports = mongoose.model('Category', categorySchema);
+const Category = mongoose.model("Category", categorySchema);
+export default Category;

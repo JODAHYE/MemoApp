@@ -1,14 +1,39 @@
-import React from 'react';
-import styled from 'styled-components';
-import {MdOpenInNew} from 'react-icons/md';
+import React, { useState } from "react";
+import styled from "styled-components";
+import MemoDetailPopup from "./MemoDetailPopup";
+const MemoCard = ({ memo }) => {
+  const [isDetailClick, setIsDetailClick] = useState(false);
+
+  return (
+    <>
+      <Wrap color={memo.color}>
+        <Label>{memo.title}</Label>
+        <SeeDetailBtn
+          onClick={() => {
+            setIsDetailClick(true);
+          }}
+        >
+          <Icon src="../../img/doc.svg" />
+        </SeeDetailBtn>
+        <Content>{memo.content}</Content>
+        <Date>{memo.date.substring(0, 10)}</Date>
+      </Wrap>
+      {isDetailClick && (
+        <MemoDetailPopup setIsDetailClick={setIsDetailClick} memo={memo} />
+      )}
+    </>
+  );
+};
+
+export default MemoCard;
 const Wrap = styled.div`
   width: 30%;
   margin: 5px;
   height: 290px;
   display: inline-block;
   background: #fff;
-  background: ${props=>props.color};
-  box-shadow: 2px 2px 2px 2px #B4B4B5;
+  background: ${(props) => props.color};
+  box-shadow: 2px 2px 2px 2px #b4b4b5;
   overflow: hidden;
   padding: 10px;
   box-sizing: border-box;
@@ -16,33 +41,38 @@ const Wrap = styled.div`
   @media (min-width: 320px) and (max-width: 480px) {
     margin: 3px;
     padding: 5px;
-    width: 48%;
+    width: 45%;
     height: 208px;
     font-size: 14px;
   }
-  
 `;
 const Label = styled.p`
   margin: 0;
-  padding: 4px;
+  width: 96%;
   border-bottom: 1px solid #fff;
   display: -webkit-box;
   -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical; 
+  -webkit-box-orient: vertical;
   overflow: hidden;
+  word-break: break-all;
   @media (min-width: 320px) and (max-width: 480px) {
-    padding: 2px;
+    width: 90%;
   }
 `;
-const SeeDetail = styled(MdOpenInNew)`
+const SeeDetailBtn = styled.button`
   position: absolute;
-  right: 4px;
+  right: 0px;
   top: 4px;
-  font-size: 24px;
   cursor: pointer;
-  color: #1D0660;
-  &:hover{
-    color: #fff;
+  border: none;
+  outline: none;
+  background: none;
+`;
+
+const Icon = styled.img`
+  width: 20px;
+  @media (min-width: 320px) and (max-width: 480px) {
+    width: 16px;
   }
 `;
 const Date = styled.p`
@@ -53,50 +83,21 @@ const Date = styled.p`
     margin-right: 8px;
   }
 `;
-const Menu = styled.span`
-  margin: 0 2px;
-  font-size: 14px;
-  cursor: pointer;
-  &:hover{
-    opacity: 0.5;
-  }
-  @media (min-width: 320px) and (max-width: 480px) {
-    font-size: 12px;
-  }
-`;
 const Content = styled.div`
-  padding: 6px 4px;
-  box-sizing: border-box;
-  height: 80%;
   overflow: hidden;
-  white-space: pre-wrap;
+  text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 10;
-  -webkit-box-orient: vertical; 
+  word-wrap: break-word;
+  -webkit-line-clamp: 11;
+  -webkit-box-orient: vertical;
+  line-height: 1.2em;
+  height: 13.2em;
+  white-space: pre-wrap;
   border-bottom: 1px solid rgba(35, 6, 81, 0.5);
-  @media (min-width: 320px) and (max-width: 374px) {
-    padding: 3px 2px;
-    font-size: 12px;
-    -webkit-line-clamp: 8;      
-  }
-  @media (min-width: 375px) and (max-width: 480px) {
-    padding: 3px 2px;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    -webkit-line-clamp: 10;
+    height: 12em;
     font-size: 13px;
-    -webkit-line-clamp: 10;      
-  }  
-
+  }
 `;
-const MemoCard = ({memo, onDetail, onMemoHandle}) => {
-  return (
-    <Wrap color={memo.color}>
-      <Label>{memo.title}</Label>
-      <SeeDetail onClick={onDetail} />
-      <Content>{memo.content}</Content>
-      <Date>{memo.date.substring(0,10)}</Date>
-      <Menu onClick={onMemoHandle}>수정</Menu>
-      <Menu onClick={onMemoHandle}>삭제</Menu>
-    </Wrap>
-  );
-};
-
-export default MemoCard;

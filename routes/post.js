@@ -1,55 +1,137 @@
-const express = require('express');
-const Post = require('../models/Post');
-const router = express.Router();
+import express from "express";
+import authMiddleware from "../middleware/auth.js";
+import Category from "../models/Category.js";
+import Post from "../models/Post.js";
+const postRouter = express.Router();
 
-router.post('/save', (req, res)=>{
-  new Post(req.body).save((err, post)=>{
-    if(err) return res.json({msg: err});
-    return res.status(201).json({msg: '게시글이 저장되었습니다', post});
-  })
-})
-
-router.get('/list/:userId/:categoryId/:skip', (req, res)=>{
-  const skip = parseInt(req.params.skip);
-  if(req.params.categoryId==='all'){
-    Post.find({userId: req.params.userId}).sort({date: -1}).skip(skip).limit(6).exec((err, posts)=>{
-      if(err) return res.status(504).json({msg: err});
-      return res.status(200).json({posts});
+postRouter.post("/save", authMiddleware, async (req, res) => {
+  const { title, content, color, category } = await req.body;
+  if (category) {
+    Category.findOne({ userId: req.user.objectId, name: category }).exec(
+      (err, result) => {
+        new Post({
+          title,
+          content,
+          color,
+          category: result._id,
+          userId: req.user.objectId,
+        }).save((err, post) => {
+          if (err) return res.json({ success: false, msg: err });
+          return res
+            .status(201)
+            .json({ success: true, msg: "Created successfully", post });
+        });
+      }
+    );
+  } else {
+    new Post({
+      title,
+      content,
+      color,
+      userId: req.user.objectId,
+    }).save((err, post) => {
+      if (err) return res.json({ success: false, msg: err });
+      return res
+        .status(201)
+        .json({ success: true, msg: "Created successfully", post });
     });
-  }else{
-    Post.find({userId: req.params.userId, category: req.params.categoryId}).sort({date: -1}).skip(skip).limit(6).exec((err, posts)=>{
-      if(err) return res.status(504).json({msg: err});
-      return res.status(200).json({posts});
-    })
   }
-})
-router.get('/list/:userId/:categoryId/:color/:skip', (req, res)=>{
-  const color = '#' + req.params.color;
-  const skip = parseInt(req.params.skip);
-  if(req.params.categoryId==='all'){
-    Post.find({userId: req.params.userId, color: color}).sort({date: -1}).skip(skip).limit(6).exec((err, posts)=>{
-      if(err) return res.status(500).json({msg: err});
-      return res.status(200).json({posts, color});
-    })
-  }else{
-    Post.find({userId: req.params.userId, category: req.params.categoryId, color: color})
-    .sort({date: -1}).skip(skip).limit(6).exec((err, posts)=>{
-      if(err) return res.status(500).json({msg: err});
-      return res.status(200).json({posts, color});
-    })  
-  }
-});
-router.delete('/delete/:userId/:postId', (req, res)=>{
-  Post.findByIdAndRemove(req.params.postId, (err, post)=>{
-    if(err) return res.status(400).json({msg: err});
-    return res.status(200).json({msg: '삭제', post});
-  })
 });
 
-router.post('/update', (req, res)=>{
-  Post.findByIdAndUpdate(req.body._id, req.body).exec((err, post)=>{
-    if(err) return res.status(400).json({msg: err});
-    return res.status(200).json({msg: '수정', post});
-  })
-})
-module.exports = router;
+postRouter.get("/list", authMiddleware, (req, res) => {
+  const skip = parseInt(req.query.skip);
+  if (req.query.color) {
+    Post.find({ userId: req.user.objectId, color: req.query.color })
+      .sort({ date: -1 })
+      .skip(skip)
+      .limit(6)
+      .exec((err, posts) => {
+        if (err) return res.status(504).json({ success: false, msg: err });
+        if (posts.length === 0)
+          return res
+            .status(200)
+            .json({ success: false, msg: "Does not exist" });
+
+        return res.status(200).json({ success: true, posts });
+      });
+  } else {
+    Post.find({ userId: req.user.objectId })
+      .sort({ date: -1 })
+      .skip(skip)
+      .limit(6)
+      .exec((err, posts) => {
+        if (err) return res.status(504).json({ success: false, msg: err });
+        if (posts.length === 0)
+          return res
+            .status(200)
+            .json({ success: false, msg: "Does not exist" });
+        return res.status(200).json({ success: true, posts });
+      });
+  }
+});
+postRouter.get("/list/filter", authMiddleware, (req, res) => {
+  const skip = parseInt(req.query.skip);
+  console.log(req.query);
+  if (req.query.color) {
+    Category.findOne({
+      userId: req.user.objectId,
+      name: req.query.category,
+    }).exec((err, result) => {
+      Post.find({
+        userId: req.user.objectId,
+        category: result._id,
+        color: req.query.color,
+      })
+        .sort({ date: -1 })
+        .skip(skip)
+        .limit(6)
+        .exec((err, posts) => {
+          if (err) return res.status(500).json({ success: false, msg: err });
+          if (posts.length === 0)
+            return res
+              .status(200)
+              .json({ success: false, msg: "Does not exist" });
+          return res.status(200).json({ success: true, posts });
+        });
+    });
+  } else {
+    Category.findOne({
+      userId: req.user.objectId,
+      name: req.query.category,
+    }).exec((err, result) => {
+      Post.find({
+        userId: req.user.objectId,
+        category: result._id,
+      })
+        .sort({ date: -1 })
+        .skip(skip)
+        .limit(6)
+        .exec((err, posts) => {
+          if (err) return res.status(500).json({ success: false, msg: err });
+          if (posts.length === 0)
+            return res
+              .status(200)
+              .json({ success: false, msg: "Does not exist" });
+          return res.status(200).json({ success: true, posts });
+        });
+    });
+  }
+});
+postRouter.delete("/delete", authMiddleware, (req, res) => {
+  Post.findByIdAndRemove(req.query.postId, (err, post) => {
+    if (err) return res.status(400).json({ success: false, msg: err });
+    return res
+      .status(200)
+      .json({ success: true, msg: "deleted successfully", post });
+  });
+});
+
+postRouter.post("/update", authMiddleware, (req, res) => {
+  Post.findByIdAndUpdate(req.body._id, req.body).exec((err, post) => {
+    if (err) return res.status(400).json({ success: false, msg: err });
+    return res
+      .status(200)
+      .json({ success: true, msg: "Uppdated successfully", post });
+  });
+});
+export default postRouter;

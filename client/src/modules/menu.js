@@ -1,27 +1,21 @@
-const LIST = "menu/LIST";
-const WRITE = "menu/WRITE";
+const SET_CURRENT_MENU = "menu/SET_CURRENT_MENU";
 
-export const menu_list = () =>{
+export const setCurrentMenu = (menu) => {
   return {
-    type: LIST
-  }
-}
-export const menu_write = () =>{
-  return {
-    type: WRITE
-  }
-}
+    type: SET_CURRENT_MENU,
+    payload: menu,
+  };
+};
+
 const initialState = {
-  menu: '내 메모지'
-}
+  menu: "My memos",
+};
 
-export default function menuReducer(state=initialState, action){
-  switch(action.type){
-    case LIST:
-      return {menu: '내 메모지'}
-    case WRITE:
-      return {menu: '메모하기'}
+export default function menuReducer(state = initialState, action) {
+  switch (action.type) {
+    case SET_CURRENT_MENU:
+      return { menu: action.payload };
     default:
-      return state
+      return state;
   }
 }

@@ -1,117 +1,84 @@
-import axios from 'axios';
-const WRITE = "post/WRITE";
-const UPDATE = "post/UPDATE";
+import axios from "axios";
+import Cookies from "universal-cookie";
+const cookies = new Cookies();
 const LIST = "post/LIST";
-const DELETE = "post/DELETE";
-const SET = "post/SET";
-const SKIP = "post/SKIP";
-const SKIP_INIT = "post/SKIP_INIT"
 const SET_COLOR = "post/SET_COLOR";
+const SET_SKIP = "post/SET_SKIP";
+const CATEGORY_FILTER_LIST = "post/CATEGORY_FILTER_LIST";
+export const getMemoList = (skip, color) => async (dispatch) => {
+  const response = await axios.get(
+    `${process.env.REACT_APP_SERVER_URI}/post/list`,
+    {
+      headers: {
+        Authorization: cookies.get("colorit-accessToken"),
+      },
+      params: {
+        skip,
+        color,
+      },
+    }
+  );
+  const data = await response.data;
+  if (!data.success) {
+    alert(data.msg);
+    dispatch(setSkip(skip - 6));
+  }
+  dispatch({ type: LIST, payload: data.posts });
+};
 
-export const write_memo = (body) => async () => {
-  await axios.post('/api/post/save', body);
-  alert('게시글이 작성되었습니다');
-  window.location.reload('/');
-}
+export const getCategoryFilterList =
+  (skip, category, color) => async (dispatch) => {
+    const response = await axios.get(
+      `${process.env.REACT_APP_SERVER_URI}/post/list/filter`,
+      {
+        headers: {
+          Authorization: cookies.get("colorit-accessToken"),
+        },
+        params: {
+          skip,
+          category,
+          color,
+        },
+      }
+    );
+    const data = await response.data;
+    if (!data.success) {
+      alert(data.msg);
+      dispatch(setSkip(skip - 6));
+    }
+    dispatch({ type: CATEGORY_FILTER_LIST, payload: data.posts });
+  };
 
-export const list_memo = (body) => {
-  const request = axios.get(`/api/post/list/${body.userId}/${body.categoryId}/${body.skip}`).then(res=>{
-    return res.data.posts;
-  });
+export const setColor = (data) => {
   return {
-    type:LIST,
-    payload: request
-  }
-}
-export const color_filter = (body) => {
-  const request = axios.get(`/api/post/list/${body.userId}/${body.categoryId}/${body.color}/${body.skip}`).then(res=>{
-    return res.data.posts;
-  });
-  return {
-    type: LIST,
-    payload: request
-  }
-}
-export const delete_memo = (userId, title, postId) => () => {
-  if(window.confirm(`<${title}>를 정말 삭제하시겠습니까?`)){
-    axios.delete(`/api/post/delete/${userId}/${postId}`).then(res=>{
-      alert('메모를 삭제하였습니다.');
-      window.location.reload('/');
-    })
-  }
-}
+    type: SET_COLOR,
+    payload: data,
+  };
+};
 
-export const update_memo = (body) => {
-  if(window.confirm(`<${body.title}>을 수정하시겠습니까?`)){
-    axios.post('/api/post/update', body).then(res=>{
-      console.log(res.data);
-      alert('메모를 수정하였습니다.');
-      window.location.reload('/');
-    });  
-  }
+export const setSkip = (data) => {
   return {
-    type: UPDATE
-  }
-}
-export const set_memo = (memo) => {
-  return {
-    type: SET,
-    payload: memo
-  }
-}
-
-export const set_skip = (num)=>{
-  return {
-    type: SKIP,
-    payload:num
-  }
-}
-
-export const init_skip = () => {
-  return {
-    type: SKIP_INIT,
-    payload: 0
-  }
-}
-
-export const set_color = data => {
-  return {
-    type:SET_COLOR,
-    payload:data
-  }
-}
-
-
+    type: SET_SKIP,
+    payload: data,
+  };
+};
 const initialState = {
-  post: {},
-  isDetail: false,
-  posts: [],
+  memos: [],
+  color: "",
   skip: 0,
-  color: '',
-}
+};
 
-
-
-export default function postReducer(state=initialState, action){
-
-  switch(action.type){
-    case WRITE:
-      return {...state, post: action.payload}
-    case UPDATE:
-      return {...state,}
+export default function postReducer(state = initialState, action) {
+  switch (action.type) {
     case LIST:
-      return {...state, posts: action.payload} 
-    case DELETE:
-      return {...state}
-    case SET:
-      return {...state, post: action.payload, isDetail: !state.isDetail}
-    case SKIP:
-      return {...state, skip: action.payload}
-    case SKIP_INIT:
-      return {...state, skip: action.payload}
+      return { ...state, memos: action.payload };
     case SET_COLOR:
-      return {...state, color: action.payload}
+      return { ...state, color: action.payload };
+    case SET_SKIP:
+      return { ...state, skip: action.payload };
+    case CATEGORY_FILTER_LIST:
+      return { ...state, memos: action.payload };
     default:
-      return state
+      return state;
   }
 }

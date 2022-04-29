@@ -1,14 +1,14 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 const { Schema } = mongoose;
 const userSchema = new Schema({
   id: {
     type: String,
     required: true,
   },
-  token: {
+  password: {
     type: String,
     required: true,
-    default: ''
-  }
+  },
 });
-module.exports = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
+export default User;

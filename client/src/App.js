@@ -1,12 +1,12 @@
-import { BrowserRouter, Routes, Route} from 'react-router-dom';
-import MainContainer from './containers/MainContainer';
-import './App.css';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Main from "./components/Main";
+import "./App.css";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<MainContainer />} />
+        <Route path="/" element={<Main />} />
       </Routes>
     </BrowserRouter>
   );

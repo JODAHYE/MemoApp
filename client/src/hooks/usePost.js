@@ -1,11 +1,13 @@
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Cookies from "universal-cookie";
 import { setCurrentMenu } from "../modules/menu";
+import { getCategoryFilterList, getMemoList } from "../modules/post";
 const cookies = new Cookies();
 export const usePost = () => {
   const dispatch = useDispatch();
-
+  const { category } = useSelector((state) => state.category);
+  const { skip, color } = useSelector((state) => state.post);
   const writeMemo = async (body) => {
     const response = await axios.post(
       `${process.env.REACT_APP_SERVER_URI}/post/save`,
@@ -40,6 +42,11 @@ export const usePost = () => {
       if (data.success) {
         alert(data.msg);
         setIsDetailClick(false);
+        if (category) {
+          dispatch(getCategoryFilterList(skip, category, color));
+        } else {
+          dispatch(getMemoList(skip));
+        }
       }
       return data;
     }
@@ -56,6 +63,11 @@ export const usePost = () => {
       }
     );
     const data = await response.data;
+    if (category) {
+      dispatch(getCategoryFilterList(skip, category, color));
+    } else {
+      dispatch(getMemoList(skip));
+    }
     return data;
   };
   return {

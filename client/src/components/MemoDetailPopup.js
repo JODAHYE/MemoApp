@@ -1,14 +1,18 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { usePost } from "../hooks/usePost";
-import { useDispatch, useSelector } from "react-redux";
-import { getMemoList } from "../modules/post";
 import { customColor } from "../style/theme";
 const MemoDetailPopup = ({ setIsDetailClick, memo }) => {
-  const dispatch = useDispatch();
   const { deleteMemo, updateMemo } = usePost();
-  const { skip } = useSelector((state) => state.post);
   const [isUpdateClick, setIsUpdateClick] = useState(false);
+  const [memoColor, setMemoColor] = useState(memo.color);
+  const [colorArrayIdx, setColorArrayIdx] = useState(0);
+  const colorArray = [
+    customColor.red,
+    customColor.yellow,
+    customColor.purple,
+    "#8C8C8C",
+  ];
   const contentField = useRef();
   const titleField = useRef();
 
@@ -21,25 +25,29 @@ const MemoDetailPopup = ({ setIsDetailClick, memo }) => {
   }, [memo, isUpdateClick]);
 
   const onDelete = useCallback(() => {
-    deleteMemo(memo.title, memo._id, setIsDetailClick).then(() => {
-      dispatch(getMemoList(skip));
-    });
-  }, [memo, deleteMemo, skip, setIsDetailClick]);
+    deleteMemo(memo.title, memo._id, setIsDetailClick);
+  }, [memo, deleteMemo, setIsDetailClick]);
 
   const onUpdate = useCallback(() => {
     const body = {
       _id: memo._id,
       title: titleField.current.innerText,
       content: contentField.current.innerText,
+      color: memoColor,
     };
     updateMemo(body).then(() => {
-      dispatch(getMemoList(skip));
       setIsUpdateClick(false);
     });
-  }, [memo._id, skip, updateMemo]);
+  }, [memo._id, updateMemo]);
+
+  const ColorChange = useCallback(() => {
+    if (colorArrayIdx >= colorArray.length - 1) setColorArrayIdx(0);
+    setColorArrayIdx((prev) => prev + 1);
+    setMemoColor(colorArray[colorArrayIdx]);
+  }, [colorArrayIdx, colorArray]);
 
   return (
-    <Wrap>
+    <Wrap color={isUpdateClick ? memoColor : "#fff"}>
       {isUpdateClick ? (
         <div>
           <ControllBtn onClick={onUpdate}>Complete</ControllBtn>
@@ -50,11 +58,16 @@ const MemoDetailPopup = ({ setIsDetailClick, memo }) => {
           >
             Cancel
           </ControllBtn>
-          <CancelBtn
+          <Btn onClick={ColorChange}>
+            <Icon src="../../img/paint-brush.svg" />
+          </Btn>
+          <Btn
             onClick={() => {
               setIsDetailClick(false);
             }}
-          />
+          >
+            <Icon src="../../img/cancel-circle.svg" />
+          </Btn>
         </div>
       ) : (
         <div>
@@ -66,13 +79,13 @@ const MemoDetailPopup = ({ setIsDetailClick, memo }) => {
             Update
           </ControllBtn>
           <ControllBtn onClick={onDelete}>Delete</ControllBtn>
-          <CancelBtn
+          <Btn
             onClick={() => {
               setIsDetailClick(false);
             }}
           >
             <Icon src="../../img/cancel-circle.svg" />
-          </CancelBtn>
+          </Btn>
         </div>
       )}
       {isUpdateClick ? (
@@ -105,7 +118,7 @@ export default MemoDetailPopup;
 const Wrap = styled.div`
   width: 30vw;
   height: 60vh;
-  background: #fff;
+  background: ${(props) => props.color};
   position: fixed;
   top: 50%;
   left: 50%;
@@ -130,7 +143,7 @@ const Wrap = styled.div`
     padding: 6px;
   }
 `;
-const CancelBtn = styled.button`
+const Btn = styled.button`
   cursor: pointer;
   border: none;
   background: none;
@@ -142,7 +155,7 @@ const Icon = styled.img`
 const Title = styled.p`
   border-bottom: 1px solid #eee;
   margin: 0;
-  border: ${(props) => props.active && "1px solid #8C8C8C"};
+  border: ${(props) => props.active && "1px solid #000"};
   outline: none;
   &:focus {
     border: 1px solid ${customColor.buttonActive};
@@ -160,7 +173,7 @@ const Date = styled.p`
 const Content = styled.p`
   margin: 0;
   white-space: pre-wrap;
-  border: ${(props) => props.active && "1px solid #8C8C8C"};
+  border: ${(props) => props.active && "1px solid #000"};
   outline: none;
   line-height: 1.3em;
   &:focus {

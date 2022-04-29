@@ -8,8 +8,6 @@ import {
   setSkip,
 } from "../modules/post";
 import MemoCard from "./MemoCard";
-import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
-import "../font.css";
 import { customColor } from "../style/theme";
 const MemoList = () => {
   const dispatch = useDispatch();
@@ -52,8 +50,12 @@ const MemoList = () => {
           memos.map((v, i) => <MemoCard key={i} memo={v} />)}
       </div>
       <Controll>
-        <PrevBtn onClick={onPrev} />
-        <NextBtn onClick={onNext} />
+        <Btn onClick={onPrev}>
+          <Icon src="../../img/arrow-left.svg" />
+        </Btn>
+        <Btn onClick={onNext}>
+          <Icon src="../../img/arrow-right.svg" />
+        </Btn>
       </Controll>
     </Wrap>
   );
@@ -100,22 +102,15 @@ const Controll = styled.div`
   display: flex;
   justify-content: center;
 `;
-const NextBtn = styled(HiChevronRight)`
+const Btn = styled.button`
   cursor: pointer;
-  margin-top: 40px;
-  padding: 8px;
-  border-left: 1px solid #fff;
-  background: ${customColor.buttonActive};
-  &:active {
-    background: ${customColor.button};
-  }
+  border: none;
+  outline: none;
+  margin: 40px 2px 0;
 `;
-const PrevBtn = styled(HiChevronLeft)`
-  cursor: pointer;
-  margin-top: 40px;
-  padding: 8px;
-  background: ${customColor.buttonActive};
-  &:active {
-    background: ${customColor.button};
+const Icon = styled.img`
+  width: 28px;
+  @media (min-width: 320px) and (max-width: 480px) {
+    width: 24px;
   }
 `;

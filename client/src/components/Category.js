@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { getCategoryList, setCategory } from "../modules/category";
-import "../font.css";
 import { useCategory } from "../hooks/useCategory";
 import { getMemoList, setColor, setSkip } from "../modules/post";
 import { customColor } from "../style/theme";

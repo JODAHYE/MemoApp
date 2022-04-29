@@ -1,6 +1,5 @@
 import React from "react";
 import MemoPage from "./MemoPage";
-import "../font.css";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 import Login from "./Login";

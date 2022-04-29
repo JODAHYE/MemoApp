@@ -22,6 +22,7 @@ const Nav = () => {
     }
     dispatch(setCurrentMenu(e.target.innerText));
   }, []);
+
   return (
     <Wrap>
       <Button onClick={onMenuClick}>Write</Button>
@@ -32,21 +33,23 @@ const Nav = () => {
 };
 
 export default Nav;
+
 const Wrap = styled.div`
   width: 100%;
-  padding: 20px;
-  border-bottom: 3px solid #fff;
-  margin: 0 auto;
   display: flex;
   gap: 2px;
   justify-content: center;
   align-items: center;
+  padding: 20px;
+  border-bottom: 3px solid #fff;
+  margin: 0 auto;
   @media (min-width: 320px) and (max-width: 480px) {
     padding: 10px 0;
     background: #f0f0f0;
     border-bottom: 2px solid #fff;
   }
 `;
+
 const Button = styled.button`
   border: none;
   padding: 10px;

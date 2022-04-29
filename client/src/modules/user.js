@@ -1,11 +1,15 @@
 import axios from "axios";
 import Cookies from "universal-cookie";
+
 const cookies = new Cookies();
+
 const LOGIN = "user/LOGIN";
 const LOGOUT = "user/LOGOUT";
+
 const initialState = {
   isLogin: cookies.get("colorit-accessToken") ? true : false,
 };
+
 export const login = (body) => async (dispatch) => {
   const response = await axios.post(
     `${process.env.REACT_APP_SERVER_URI}/user/login`,
@@ -21,11 +25,13 @@ export const login = (body) => async (dispatch) => {
   });
   dispatch({ type: LOGIN });
 };
+
 export const logout = (dispatch) => () => {
   cookies.remove("colorit-accessToken");
   window.location.reload();
   dispatch({ type: LOGOUT });
 };
+
 export default function userReducer(state = initialState, action) {
   switch (action.type) {
     case LOGIN:

@@ -6,6 +6,7 @@ import { getCategoryFilterList, getMemoList } from "../modules/post";
 const cookies = new Cookies();
 export const usePost = () => {
   const dispatch = useDispatch();
+
   const { category } = useSelector((state) => state.category);
   const { skip, color } = useSelector((state) => state.post);
   const writeMemo = async (body) => {

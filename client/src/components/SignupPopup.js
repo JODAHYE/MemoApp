@@ -2,19 +2,23 @@ import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 import { useAuth } from "../hooks/useAuth";
 import { customColor } from "../style/theme";
+
 const SignupPopup = ({ setOnSignup }) => {
   const { signup } = useAuth();
+
   const [info, setInfo] = useState({
     id: "",
     password: "",
     passwordCheck: "",
   });
+
   const onChange = useCallback(
     (e) => {
       setInfo({ ...info, [e.target.name]: e.target.value });
     },
     [info]
   );
+
   const onSubmit = useCallback(
     (e) => {
       e.preventDefault();
@@ -25,6 +29,7 @@ const SignupPopup = ({ setOnSignup }) => {
     },
     [info, setOnSignup, signup]
   );
+
   return (
     <Wrap>
       <Title>Sign up</Title>
@@ -64,21 +69,24 @@ const SignupPopup = ({ setOnSignup }) => {
 };
 
 export default SignupPopup;
+
 const Wrap = styled.div`
   position: fixed;
   width: 500px;
   height: 500px;
-  box-shadow: 0px 0px 1000px 1000px rgba(0, 0, 0, 0.5);
-  background: #fff;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  box-shadow: 0px 0px 1000px 1000px rgba(0, 0, 0, 0.5);
+  background: #fff;
   padding: 20px;
 `;
+
 const Title = styled.h3`
   width: 100%;
   text-align: center;
 `;
+
 const CancelBtn = styled.button`
   position: absolute;
   top: 10px;
@@ -88,33 +96,37 @@ const CancelBtn = styled.button`
   background: none;
   outline: none;
 `;
+
 const Icon = styled.img`
   width: 20px;
 `;
+
 const Form = styled.form`
   width: 100%;
 `;
+
 const Input = styled.input`
+  display: block;
+  width: 100%;
   border: 1px solid #eee;
   padding: 6px;
-  width: 100%;
   background: ${customColor.inputColor};
   border-radius: 20px;
   line-height: 2em;
   font-size: 16px;
-  display: block;
   outline: none;
   margin-top: 10px;
   box-sizing: border-box;
 `;
+
 const Btn = styled.button`
+  width: 100%;
+  line-height: 2em;
   border: none;
   outline: none;
   padding: 6px;
   cursor: pointer;
   border-radius: 6px;
-  width: 100%;
-  line-height: 2em;
   font-size: 16px;
   margin-top: 10px;
   background: ${customColor.button};

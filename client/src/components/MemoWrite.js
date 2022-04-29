@@ -8,8 +8,11 @@ import { setColor, setSkip } from "../modules/post";
 
 const MemoWrite = () => {
   const dispatch = useDispatch();
+
   const { writeMemo } = usePost();
+
   const { categories } = useSelector((state) => state.category);
+
   const [value, setValue] = useState({
     title: "",
     content: "",
@@ -113,19 +116,21 @@ const Wrap = styled.div`
     height: 60vh;
   }
 `;
+
 const Option = styled.div`
   width: 100%;
   height: 10%;
-  background: ${(props) => props.color};
+  position: relative;
   display: flex;
   align-items: center;
-  position: relative;
+  background: ${(props) => props.color};
 `;
+
 const MemoColor = styled.span`
-  margin: 0 10px;
-  display: inline-block;
   width: 20px;
   height: 20px;
+  display: inline-block;
+  margin: 0 10px;
   border-radius: 50%;
   background: ${(props) => props.color};
   cursor: pointer;
@@ -136,50 +141,56 @@ const MemoColor = styled.span`
     margin: 0 2px;
   }
 `;
+
 const MemoColorBasicBtn = styled.button`
   cursor: pointer;
   border: none;
   background: none;
   outline: none;
 `;
+
 const Icon = styled.img`
   width: 20px;
 `;
+
 const SelectBox = styled.select`
+  width: 50%;
+  position: absolute;
+  right: 10px;
   outline: none;
   padding: 5px;
   font-size: 16px;
-  position: absolute;
-  right: 10px;
-  width: 50%;
   @media (min-width: 320px) and (max-width: 480px) {
     font-size: 14px;
   }
 `;
+
 const CategorySelector = styled.option`
   font-size: 14px;
   @media (min-width: 320px) and (max-width: 480px) {
     font-size: 12px;
   }
 `;
+
 const Form = styled.form`
   width: 100%;
   height: 80%;
-  margin-top: 5%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-top: 5%;
   @media (min-width: 320px) and (max-width: 480px) {
     height: 84%;
   }
 `;
+
 const Title = styled.input`
-  border: none;
-  outline: none;
   width: 70%;
   padding: 10px;
   font-size: 16px;
+  border: none;
+  outline: none;
   @media (min-width: 320px) and (max-width: 374px) {
     width: 85%;
     font-size: 14px;
@@ -188,11 +199,12 @@ const Title = styled.input`
     width: 85%;
   }
 `;
+
 const Content = styled.textarea`
-  border: none;
-  outline: none;
   width: 70%;
   height: 70%;
+  border: none;
+  outline: none;
   padding: 10px;
   border-top: 1px solid #2f4858;
   @media (min-width: 320px) and (max-width: 374px) {
@@ -205,6 +217,7 @@ const Content = styled.textarea`
     height: 80%;
   }
 `;
+
 const SubmitBtn = styled.button`
   outline: none;
   margin-top: 20px;

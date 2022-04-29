@@ -2,19 +2,23 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { usePost } from "../hooks/usePost";
 import { customColor } from "../style/theme";
+
 const MemoDetailPopup = ({ setIsDetailClick, memo }) => {
   const { deleteMemo, updateMemo } = usePost();
+
+  const contentField = useRef();
+  const titleField = useRef();
+
   const [isUpdateClick, setIsUpdateClick] = useState(false);
   const [memoColor, setMemoColor] = useState(memo.color);
   const [colorArrayIdx, setColorArrayIdx] = useState(0);
+
   const colorArray = [
     customColor.red,
     customColor.yellow,
     customColor.purple,
     "#8C8C8C",
   ];
-  const contentField = useRef();
-  const titleField = useRef();
 
   useEffect(() => {
     if (isUpdateClick) {
@@ -115,13 +119,14 @@ const MemoDetailPopup = ({ setIsDetailClick, memo }) => {
 };
 
 export default MemoDetailPopup;
+
 const Wrap = styled.div`
   width: 30vw;
   height: 60vh;
-  background: ${(props) => props.color};
   position: fixed;
   top: 50%;
   left: 50%;
+  background: ${(props) => props.color};
   transform: translate(-50%, -50%);
   padding: 10px 22px;
   overflow-y: auto;
@@ -143,15 +148,18 @@ const Wrap = styled.div`
     padding: 6px;
   }
 `;
+
 const Btn = styled.button`
   cursor: pointer;
   border: none;
   background: none;
   outline: none;
 `;
+
 const Icon = styled.img`
   width: 20px;
 `;
+
 const Title = styled.p`
   border-bottom: 1px solid #eee;
   margin: 0;
@@ -164,12 +172,14 @@ const Title = styled.p`
     font-size: 12px;
   }
 `;
+
 const Date = styled.p`
   border-bottom: 1px solid #eee;
   @media (min-width: 320px) and (max-width: 480px) {
     font-size: 12px;
   }
 `;
+
 const Content = styled.p`
   margin: 0;
   white-space: pre-wrap;
@@ -183,6 +193,7 @@ const Content = styled.p`
     font-size: 12px;
   }
 `;
+
 const ControllBtn = styled.button`
   border: none;
   outline: none;

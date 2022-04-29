@@ -2,6 +2,7 @@ import express from "express";
 import authMiddleware from "../middleware/auth.js";
 import Category from "../models/Category.js";
 import Post from "../models/Post.js";
+
 const postRouter = express.Router();
 
 postRouter.post("/save", authMiddleware, async (req, res) => {
@@ -69,6 +70,7 @@ postRouter.get("/list", authMiddleware, (req, res) => {
       });
   }
 });
+
 postRouter.get("/list/filter", authMiddleware, (req, res) => {
   const skip = parseInt(req.query.skip);
   console.log(req.query);
@@ -117,6 +119,7 @@ postRouter.get("/list/filter", authMiddleware, (req, res) => {
     });
   }
 });
+
 postRouter.delete("/delete", authMiddleware, (req, res) => {
   Post.findByIdAndRemove(req.query.postId, (err, post) => {
     if (err) return res.status(400).json({ success: false, msg: err });
@@ -134,4 +137,5 @@ postRouter.post("/update", authMiddleware, (req, res) => {
       .json({ success: true, msg: "Uppdated successfully", post });
   });
 });
+
 export default postRouter;

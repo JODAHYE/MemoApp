@@ -8,8 +8,10 @@ import { customColor } from "../style/theme";
 
 const Category = ({ isCategoryOpen, onCategoryToggle }) => {
   const dispatch = useDispatch();
+
   const { createCategory, deleteCategory } = useCategory();
   const { categories, category } = useSelector((state) => state.category);
+
   const [isAddBtnClick, setIsAddBtnClick] = useState(false);
   const [isDeleteBtnClick, setIsDeleteBtnClick] = useState(false);
   const [value, setValue] = useState("");
@@ -68,6 +70,7 @@ const Category = ({ isCategoryOpen, onCategoryToggle }) => {
     dispatch(setColor(""));
     dispatch(setCategory(""));
   }, []);
+
   return (
     <Wrap view={isCategoryOpen ? "block" : "none"}>
       <Title>Folder</Title>
@@ -131,6 +134,7 @@ const Category = ({ isCategoryOpen, onCategoryToggle }) => {
 };
 
 export default Category;
+
 const Wrap = styled.div`
   position: absolute;
   top: 0;
@@ -139,30 +143,32 @@ const Wrap = styled.div`
   padding: 10px;
   box-sizing: border-box;
   @media (min-width: 320px) and (max-width: 480px) {
-    width: 50%;
+    display: ${(props) => props.view};
     position: fixed;
     left: 0;
-    z-index: 400;
     bottom: 0;
+    width: 50%;
+    z-index: 400;
     box-shadow: 0px 0px 700px 700px rgba(0, 0, 0, 0.5);
-    display: ${(props) => props.view};
   }
 `;
+
 const Title = styled.h3``;
+
 const CancelCategoryBtn = styled.button`
   display: none;
   @media (min-width: 320px) and (max-width: 480px) {
-    background: #000;
+    display: block;
+    width: 100%;
     outline: none;
     border: none;
-    display: block;
     border-radius: 6px;
     margin-top: 5px;
     padding: 4px;
-    width: 100%;
     background: ${customColor.button};
   }
 `;
+
 const CategoryList = styled.ul`
   width: 100%;
   list-style: none;
@@ -170,23 +176,27 @@ const CategoryList = styled.ul`
   padding: 0px;
   word-wrap: break-word;
 `;
+
 const CategoryItem = styled.li`
+  width: 100%;
   font-size: 14px;
   cursor: pointer;
-  width: 100%;
   margin-bottom: 6px;
   border-bottom: 1px solid #6b6b6b;
   color: ${(props) => props.active && "orange"};
 `;
+
 const CategoryBtn = styled.button`
   cursor: pointer;
   border: none;
   outline: none;
   background: none;
 `;
+
 const Icon = styled.img`
   width: 20px;
 `;
+
 const Input = styled.input`
   width: 95%;
   padding: 4px;
@@ -195,6 +205,7 @@ const Input = styled.input`
   outline: none;
   border: none;
 `;
+
 const ControllBtn = styled.button`
   border: none;
   cursor: pointer;

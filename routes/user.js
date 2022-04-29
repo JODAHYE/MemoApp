@@ -2,11 +2,12 @@ import dotenv from "dotenv";
 import express from "express";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
+import bcrypt from "bcrypt";
 
 const userRouter = express.Router();
-import bcrypt from "bcrypt";
 const saltRounds = 10;
 dotenv.config();
+
 userRouter.post("/login", (req, res) => {
   User.findOne({ id: req.body.id }).exec((err, user) => {
     if (err) return res.status(500).json({ success: false, msg: err });

@@ -1,6 +1,8 @@
 import axios from "axios";
 import Cookies from "universal-cookie";
+
 const cookies = new Cookies();
+
 const SELECT = "category/SELECT";
 const LIST = "category/LIST";
 
@@ -14,15 +16,16 @@ export const getCategoryList = () => async (dispatch) => {
     }
   );
   const data = response.data;
-
   dispatch({ type: LIST, payload: data.categories });
 };
+
 export const setCategory = (category) => {
   return {
     type: SELECT,
     payload: category,
   };
 };
+
 const initialState = {
   category: "",
   categories: [],

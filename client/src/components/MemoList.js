@@ -11,6 +11,7 @@ import MemoCard from "./MemoCard";
 import { customColor } from "../style/theme";
 const MemoList = () => {
   const dispatch = useDispatch();
+
   const { memos } = useSelector((state) => state.post);
   const { category } = useSelector((state) => state.category);
   const { color, skip } = useSelector((state) => state.post);
@@ -62,20 +63,23 @@ const MemoList = () => {
 };
 
 export default memo(MemoList);
+
 const Wrap = styled.div`
   width: 60%;
+  position: relative;
   margin: 0 auto;
   text-align: center;
-  position: relative;
   @media (min-width: 320px) and (max-width: 480px) {
     width: 320px;
   }
 `;
+
 const FilterBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
 `;
+
 const Color = styled.span`
   display: inline-block;
   width: 20px;
@@ -98,16 +102,19 @@ const Color = styled.span`
     height: 18px;
   }
 `;
+
 const Controll = styled.div`
   display: flex;
   justify-content: center;
 `;
+
 const Btn = styled.button`
   cursor: pointer;
   border: none;
   outline: none;
   margin: 40px 2px 0;
 `;
+
 const Icon = styled.img`
   width: 28px;
   @media (min-width: 320px) and (max-width: 480px) {

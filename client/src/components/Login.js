@@ -7,11 +7,13 @@ import { customColor } from "../style/theme";
 
 const Login = () => {
   const dispatch = useDispatch();
+
   const [onSignup, setOnSignup] = useState(false);
   const [info, setInfo] = useState({
     id: "",
     password: "",
   });
+
   const onSubmit = useCallback(
     (e) => {
       e.preventDefault();
@@ -19,12 +21,14 @@ const Login = () => {
     },
     [info]
   );
+
   const onChange = useCallback(
     (e) => {
       setInfo({ ...info, [e.target.name]: e.target.value });
     },
     [info]
   );
+
   return (
     <Wrap>
       <LogoImg src="../../img/logo.png" />
@@ -52,18 +56,19 @@ const Login = () => {
 };
 
 export default Login;
+
 const Wrap = styled.div`
   width: 500px;
   height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   background: #fff;
   box-shadow: 1px 1px 4px 4px rgba(0, 0, 0, 0.04);
   border-radius: 20px;
   padding: 20px;
   box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   @media (min-width: 320px) and (max-width: 480px) {
     width: 86%;
     height: auto;
@@ -72,17 +77,20 @@ const Wrap = styled.div`
     }
   }
 `;
+
 const LogoImg = styled.img`
   width: 100%;
 `;
+
 const Form = styled.form`
   width: 100%;
   height: 90%;
 `;
+
 const Input = styled.input`
+  width: 100%;
   border: 1px solid #eee;
   padding: 6px;
-  width: 100%;
   background: #ebceaa;
   border-radius: 20px;
   line-height: 2em;
@@ -98,13 +106,13 @@ const Input = styled.input`
 `;
 
 const LoginBtn = styled.button`
-  border: none;
-  outline: none;
-  padding: 6px;
-  cursor: pointer;
-  border-radius: 6px;
   width: 100%;
   line-height: 2em;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  border-radius: 6px;
+  padding: 6px;
   font-size: 16px;
   margin-top: 10px;
   background: ${customColor.button};
@@ -120,8 +128,8 @@ const LoginBtn = styled.button`
 const SignupBtn = styled.button`
   border: none;
   outline: none;
-  padding: 6px;
   cursor: pointer;
+  padding: 6px;
   border-radius: 6px;
   font-size: 14px;
   background: ${customColor.button};

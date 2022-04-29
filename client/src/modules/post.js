@@ -1,10 +1,13 @@
 import axios from "axios";
 import Cookies from "universal-cookie";
+
 const cookies = new Cookies();
+
 const LIST = "post/LIST";
 const SET_COLOR = "post/SET_COLOR";
 const SET_SKIP = "post/SET_SKIP";
 const CATEGORY_FILTER_LIST = "post/CATEGORY_FILTER_LIST";
+
 export const getMemoList = (skip, color) => async (dispatch) => {
   const response = await axios.get(
     `${process.env.REACT_APP_SERVER_URI}/post/list`,
@@ -62,6 +65,7 @@ export const setSkip = (data) => {
     payload: data,
   };
 };
+
 const initialState = {
   memos: [],
   color: "",

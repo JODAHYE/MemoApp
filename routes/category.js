@@ -2,7 +2,9 @@ import express from "express";
 import authMiddleware from "../middleware/auth.js";
 import Category from "../models/Category.js";
 import Post from "../models/Post.js";
+
 const categoryRouter = express.Router();
+
 categoryRouter.post("/create", authMiddleware, (req, res) => {
   Category.findOne(
     { userId: req.user.objectId, name: req.body.name },

@@ -80,6 +80,10 @@ const Wrap = styled.div`
   box-shadow: 0px 0px 1000px 1000px rgba(0, 0, 0, 0.5);
   background: #fff;
   padding: 20px;
+  @media (min-width: 320px) and (max-width: 480px) {
+    width: 80%;
+    height: 50%;
+  }
 `;
 
 const Title = styled.h3`
@@ -117,6 +121,10 @@ const Input = styled.input`
   outline: none;
   margin-top: 10px;
   box-sizing: border-box;
+  @media (min-width: 320px) and (max-width: 480px) {
+    font-size: 14px;
+    padding: 2px;
+  }
 `;
 
 const Btn = styled.button`
@@ -132,5 +140,9 @@ const Btn = styled.button`
   background: ${customColor.button};
   &:active {
     background: ${customColor.buttonActive};
+  }
+  @media (min-width: 320px) and (max-width: 480px) {
+    font-size: 14px;
+    padding: 2px;
   }
 `;

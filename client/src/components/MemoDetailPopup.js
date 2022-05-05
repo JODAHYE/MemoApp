@@ -6,12 +6,13 @@ import { customColor } from "../style/theme";
 const MemoDetailPopup = ({ setIsDetailClick, memo }) => {
   const { deleteMemo, updateMemo } = usePost();
 
-  const contentField = useRef();
-  const titleField = useRef();
-
   const [isUpdateClick, setIsUpdateClick] = useState(false);
   const [memoColor, setMemoColor] = useState(memo.color);
   const [colorArrayIdx, setColorArrayIdx] = useState(0);
+  const [updatedInfo, setUpdatedInfo] = useState({
+    title: memo.title,
+    content: memo.content,
+  });
 
   const colorArray = [
     customColor.red,
@@ -20,14 +21,6 @@ const MemoDetailPopup = ({ setIsDetailClick, memo }) => {
     "#8C8C8C",
   ];
 
-  useEffect(() => {
-    if (isUpdateClick) {
-      titleField.current.innerText = memo.title;
-      contentField.current.innerText = memo.content;
-      contentField.current.focus();
-    }
-  }, [memo, isUpdateClick]);
-
   const onDelete = useCallback(() => {
     deleteMemo(memo.title, memo._id, setIsDetailClick);
   }, [memo, deleteMemo, setIsDetailClick]);
@@ -35,14 +28,18 @@ const MemoDetailPopup = ({ setIsDetailClick, memo }) => {
   const onUpdate = useCallback(() => {
     const body = {
       _id: memo._id,
-      title: titleField.current.innerText,
-      content: contentField.current.innerText,
+      title: updatedInfo.title,
+      content: updatedInfo.content,
       color: memoColor,
     };
     updateMemo(body).then(() => {
       setIsUpdateClick(false);
     });
   }, [memo._id, updateMemo]);
+
+  const onUpdateInfo = (e) => {
+    setUpdatedInfo({ ...updatedInfo, [e.target.name]: e.target.value });
+  };
 
   const ColorChange = useCallback(() => {
     if (colorArrayIdx >= colorArray.length - 1) setColorArrayIdx(0);
@@ -93,24 +90,24 @@ const MemoDetailPopup = ({ setIsDetailClick, memo }) => {
         </div>
       )}
       {isUpdateClick ? (
-        <Title
-          ref={titleField}
-          contentEditable="true"
-          spellCheck="false"
+        <UpdateTitleField
+          name="title"
+          value={updatedInfo.title}
+          onChange={onUpdateInfo}
           active={true}
-        ></Title>
+        />
       ) : (
         <Title>{memo.title}</Title>
       )}
 
       <Date>{memo.date.substring(0, 10)}</Date>
       {isUpdateClick ? (
-        <Content
-          ref={contentField}
-          contentEditable="true"
-          spellCheck="false"
+        <UpdateContentField
+          name="content"
+          value={updatedInfo.content}
+          onChange={onUpdateInfo}
           active={true}
-        ></Content>
+        />
       ) : (
         <Content>{memo.content}</Content>
       )}
@@ -191,6 +188,30 @@ const Content = styled.p`
   }
   @media (min-width: 320px) and (max-width: 480px) {
     font-size: 12px;
+  }
+`;
+const UpdateTitleField = styled.input`
+  border: 1px solid #fff;
+  outline: none;
+  width: 100%;
+  padding: 4px;
+  background: transparent;
+  box-sizing: border-box;
+  &:focus {
+    border: 1px solid ${customColor.buttonActive};
+  }
+`;
+const UpdateContentField = styled.textarea`
+  width: 100%;
+  height: 70%;
+  resize: none;
+  border: 1px solid #fff;
+  outline: none;
+  padding: 4px;
+  background: transparent;
+  box-sizing: border-box;
+  &:focus {
+    border: 1px solid ${customColor.buttonActive};
   }
 `;
 

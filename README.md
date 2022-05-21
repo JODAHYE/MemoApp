@@ -1,5 +1,7 @@
 ## 간단한 메모장 웹사이트
 다양한 배경색을 선택하여 메모를 작성할 수 있습니다.
+> https://color--it.herokuapp.com/
+
 ![image](https://user-images.githubusercontent.com/57217119/169643596-3ed3b30a-4304-40f9-b966-a79611595731.png)
 
 
@@ -14,7 +16,7 @@
 
 배포
 > 헤로쿠
-> https://color--it.herokuapp.com/
+
 
 ## 기능
  - 로그인(jsonwebtoken)

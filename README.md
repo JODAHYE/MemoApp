@@ -1,5 +1,6 @@
 ## 간단한 메모장 웹사이트
 다양한 배경색을 선택하여 메모를 작성할 수 있습니다.
+![memoapp.JPG](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/bfb17409-95d9-4f5e-bc2b-5dbd5ba46f85/memoapp.jpg)
 
 ## 사용 기술
 

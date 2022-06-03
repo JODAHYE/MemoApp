@@ -1,18 +1,8 @@
-import axios from "axios";
-import Cookies from "universal-cookie";
-const cookies = new Cookies();
+import CategoryAPI from "../lib/api/CategoryAPI";
+
 export const useCategory = () => {
   const createCategory = async (body) => {
-    const response = await axios.post(
-      `${process.env.REACT_APP_SERVER_URI}/category/create`,
-      body,
-      {
-        headers: {
-          Authorization: cookies.get("colorit-accessToken"),
-        },
-      }
-    );
-    const data = await response.data;
+    const data = await CategoryAPI.createCategory(body);
     if (!data.success) {
       return alert(data.msg);
     }
@@ -22,21 +12,10 @@ export const useCategory = () => {
   const deleteCategory = async (categoryName) => {
     if (
       window.confirm(
-        `Are you sure yto delete the folder? Memos in that folder will also be deleted.`
+        "폴더를 삭제하면 해당 폴더의 메모들도 삭제됩니다. 삭제하시겠습니까?"
       )
     ) {
-      const response = await axios.delete(
-        `${process.env.REACT_APP_SERVER_URI}/category/delete`,
-        {
-          headers: {
-            Authorization: cookies.get("colorit-accessToken"),
-          },
-          params: {
-            name: categoryName,
-          },
-        }
-      );
-      const data = await response.data;
+      const data = await CategoryAPI.deleteCategory(categoryName);
       if (!data.success) {
         return alert(data.msg);
       }

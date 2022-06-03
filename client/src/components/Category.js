@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { getCategoryList, setCategory } from "../modules/category";
 import { useCategory } from "../hooks/useCategory";
@@ -29,7 +29,7 @@ const Category = ({ isCategoryOpen, onCategoryToggle }) => {
     setIsDeleteBtnClick(false);
   }, []);
 
-  const isCorrectStr = () => {
+  const isCorrectName = () => {
     for (let i = 0; i < value.length; i++) {
       if (value.charCodeAt(i) >= 21 && value.charCodeAt(i) < 48) return false;
       if (value.charCodeAt(i) >= 58 && value.charCodeAt(i) < 65) return false;
@@ -41,14 +41,14 @@ const Category = ({ isCategoryOpen, onCategoryToggle }) => {
 
   const onCreate = useCallback(() => {
     if (!value) return;
-    if (!isCorrectStr()) {
+    if (!isCorrectName()) {
       return alert("Special characters are not allowed");
     }
     createCategory({ name: value }).then(() => {
       dispatch(getCategoryList());
       setValue("");
     });
-  }, [value, createCategory, isCorrectStr]);
+  }, [value, createCategory, isCorrectName]);
 
   const onDelete = useCallback(() => {
     deleteCategory(value).then(() => {
@@ -78,13 +78,13 @@ const Category = ({ isCategoryOpen, onCategoryToggle }) => {
         <CategoryItem onClick={showAllMemos}>All</CategoryItem>
         {categories &&
           categories.length > 0 &&
-          categories.map((v, i) => (
+          categories.map((item, i) => (
             <CategoryItem
               onClick={onCategoryClick}
               key={i}
-              active={category === v.name && true}
+              active={category === item.name && true}
             >
-              {v.name}
+              {item.name}
             </CategoryItem>
           ))}
       </CategoryList>
@@ -183,7 +183,11 @@ const CategoryItem = styled.li`
   cursor: pointer;
   margin-bottom: 6px;
   border-bottom: 1px solid #6b6b6b;
-  color: ${(props) => props.active && "orange"};
+  ${(props) =>
+    props.active &&
+    css`
+      color: orange;
+    `};
 `;
 
 const CategoryBtn = styled.button`

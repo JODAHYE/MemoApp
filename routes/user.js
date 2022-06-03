@@ -12,12 +12,14 @@ userRouter.post("/login", (req, res) => {
   User.findOne({ id: req.body.id }).exec((err, user) => {
     if (err) return res.status(500).json({ success: false, msg: err });
     if (!user)
-      return res.status(200).json({ success: false, msg: "Incorrect ID" });
+      return res
+        .status(200)
+        .json({ success: false, msg: "일치하지 않는 정보" });
     bcrypt.compare(req.body.password, user.password, (err, result) => {
       if (!result)
         return res
           .status(200)
-          .json({ success: false, msg: "Incorrect Password" });
+          .json({ success: false, msg: "일치하지 않는 정보" });
       const accessToken = jwt.sign({ id: user.id }, process.env.SECRET_KEY, {
         algorithm: "HS256",
         expiresIn: "2h",
@@ -41,12 +43,14 @@ userRouter.post("/signup", (req, res) => {
             if (err) return res.status(500).json({ msg: err });
             return res
               .status(201)
-              .json({ success: true, msg: "Created successfully", user });
+              .json({ success: true, msg: "회원가입 성공", user });
           });
         });
       });
     } else {
-      return res.status(200).json({ success: false, msg: "ID exists", user });
+      return res
+        .status(200)
+        .json({ success: false, msg: "이미 존재하는 ID", user });
     }
   });
 });

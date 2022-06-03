@@ -20,7 +20,7 @@ postRouter.post("/save", authMiddleware, async (req, res) => {
           if (err) return res.json({ success: false, msg: err });
           return res
             .status(201)
-            .json({ success: true, msg: "Created successfully", post });
+            .json({ success: true, msg: "작성 성공", post });
         });
       }
     );
@@ -32,9 +32,7 @@ postRouter.post("/save", authMiddleware, async (req, res) => {
       userId: req.user.objectId,
     }).save((err, post) => {
       if (err) return res.json({ success: false, msg: err });
-      return res
-        .status(201)
-        .json({ success: true, msg: "Created successfully", post });
+      return res.status(201).json({ success: true, msg: "작성 성공", post });
     });
   }
 });
@@ -49,9 +47,7 @@ postRouter.get("/list", authMiddleware, (req, res) => {
       .exec((err, posts) => {
         if (err) return res.status(504).json({ success: false, msg: err });
         if (posts.length === 0)
-          return res
-            .status(200)
-            .json({ success: false, msg: "Does not exist" });
+          return res.status(200).json({ success: false, msg: "존재하지 않음" });
 
         return res.status(200).json({ success: true, posts });
       });
@@ -63,9 +59,7 @@ postRouter.get("/list", authMiddleware, (req, res) => {
       .exec((err, posts) => {
         if (err) return res.status(504).json({ success: false, msg: err });
         if (posts.length === 0)
-          return res
-            .status(200)
-            .json({ success: false, msg: "Does not exist" });
+          return res.status(200).json({ success: false, msg: "존재하지 않음" });
         return res.status(200).json({ success: true, posts });
       });
   }
@@ -92,7 +86,7 @@ postRouter.get("/list/filter", authMiddleware, (req, res) => {
           if (posts.length === 0)
             return res
               .status(200)
-              .json({ success: false, msg: "Does not exist" });
+              .json({ success: false, msg: "존재하지 않음" });
           return res.status(200).json({ success: true, posts });
         });
     });
@@ -113,7 +107,7 @@ postRouter.get("/list/filter", authMiddleware, (req, res) => {
           if (posts.length === 0)
             return res
               .status(200)
-              .json({ success: false, msg: "Does not exist" });
+              .json({ success: false, msg: "존재하지 않음" });
           return res.status(200).json({ success: true, posts });
         });
     });
@@ -123,18 +117,14 @@ postRouter.get("/list/filter", authMiddleware, (req, res) => {
 postRouter.delete("/delete", authMiddleware, (req, res) => {
   Post.findByIdAndRemove(req.query.postId, (err, post) => {
     if (err) return res.status(400).json({ success: false, msg: err });
-    return res
-      .status(200)
-      .json({ success: true, msg: "deleted successfully", post });
+    return res.status(200).json({ success: true, msg: "삭제 성공", post });
   });
 });
 
 postRouter.post("/update", authMiddleware, (req, res) => {
   Post.findByIdAndUpdate(req.body._id, req.body).exec((err, post) => {
     if (err) return res.status(400).json({ success: false, msg: err });
-    return res
-      .status(200)
-      .json({ success: true, msg: "Uppdated successfully", post });
+    return res.status(200).json({ success: true, msg: "수정 성공", post });
   });
 });
 

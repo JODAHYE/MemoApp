@@ -13,7 +13,7 @@ categoryRouter.post("/create", authMiddleware, (req, res) => {
       if (category)
         return res
           .status(200)
-          .json({ success: false, msg: "Already exist", category });
+          .json({ success: false, msg: "이미 존재", category });
       else {
         new Category({
           userId: req.user.objectId,
@@ -22,7 +22,7 @@ categoryRouter.post("/create", authMiddleware, (req, res) => {
           if (err) return res.status(500).json({ msg: err });
           return res
             .status(201)
-            .json({ success: true, msg: "Created successfully", category });
+            .json({ success: true, msg: "생성 성공", category });
         });
       }
     }
@@ -50,12 +50,10 @@ categoryRouter.delete("/delete", authMiddleware, (req, res) => {
         if (err) {
           console.log(err);
         }
-        return res
-          .status(200)
-          .json({ success: true, msg: "Deleted successfully" });
+        return res.status(200).json({ success: true, msg: "삭제 성공" });
       });
     } else {
-      return res.status(200).json({ success: false, msg: "Does not exist" });
+      return res.status(200).json({ success: false, msg: "존재하지 않음" });
     }
   });
 });

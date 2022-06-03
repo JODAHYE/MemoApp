@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { usePost } from "../hooks/usePost";
 import { customColor } from "../style/theme";
 
@@ -35,56 +35,47 @@ const MemoDetailPopup = ({ setIsDetailClick, memo }) => {
     updateMemo(body).then(() => {
       setIsUpdateClick(false);
     });
-  }, [memo._id, updateMemo]);
+  }, [memoColor, updatedInfo, memo._id, updateMemo]);
 
-  const onUpdateInfo = (e) => {
-    setUpdatedInfo({ ...updatedInfo, [e.target.name]: e.target.value });
-  };
+  const onUpdateInfo = useCallback(
+    (e) => {
+      setUpdatedInfo({ ...updatedInfo, [e.target.name]: e.target.value });
+    },
+    [updatedInfo]
+  );
 
-  const ColorChange = useCallback(() => {
+  const colorChange = useCallback(() => {
     if (colorArrayIdx >= colorArray.length - 1) setColorArrayIdx(0);
     setColorArrayIdx((prev) => prev + 1);
     setMemoColor(colorArray[colorArrayIdx]);
   }, [colorArrayIdx, colorArray]);
+
+  const closeDetailPopup = useCallback(() => {
+    setIsDetailClick(false);
+  }, [setIsDetailClick]);
+
+  const onUpdateButtonToggle = useCallback(() => {
+    setIsUpdateClick((prev) => !prev);
+  }, []);
 
   return (
     <Wrap color={isUpdateClick ? memoColor : "#fff"}>
       {isUpdateClick ? (
         <div>
           <ControllBtn onClick={onUpdate}>Complete</ControllBtn>
-          <ControllBtn
-            onClick={() => {
-              setIsUpdateClick(false);
-            }}
-          >
-            Cancel
-          </ControllBtn>
-          <Btn onClick={ColorChange}>
+          <ControllBtn onClick={onUpdateButtonToggle}>Cancel</ControllBtn>
+          <Btn onClick={colorChange}>
             <Icon src="../../img/paint-brush.svg" />
           </Btn>
-          <Btn
-            onClick={() => {
-              setIsDetailClick(false);
-            }}
-          >
+          <Btn onClick={closeDetailPopup}>
             <Icon src="../../img/cancel-circle.svg" />
           </Btn>
         </div>
       ) : (
         <div>
-          <ControllBtn
-            onClick={() => {
-              setIsUpdateClick(true);
-            }}
-          >
-            Update
-          </ControllBtn>
+          <ControllBtn onClick={onUpdateButtonToggle}>Update</ControllBtn>
           <ControllBtn onClick={onDelete}>Delete</ControllBtn>
-          <Btn
-            onClick={() => {
-              setIsDetailClick(false);
-            }}
-          >
+          <Btn onClick={closeDetailPopup}>
             <Icon src="../../img/cancel-circle.svg" />
           </Btn>
         </div>
@@ -160,7 +151,6 @@ const Icon = styled.img`
 const Title = styled.p`
   border-bottom: 1px solid #eee;
   margin: 0;
-  border: ${(props) => props.active && "1px solid #000"};
   outline: none;
   &:focus {
     border: 1px solid ${customColor.buttonActive};
@@ -180,7 +170,6 @@ const Date = styled.p`
 const Content = styled.p`
   margin: 0;
   white-space: pre-wrap;
-  border: ${(props) => props.active && "1px solid #000"};
   outline: none;
   line-height: 1.3em;
   &:focus {

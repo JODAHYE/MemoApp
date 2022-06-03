@@ -1,21 +1,10 @@
-import axios from "axios";
-import Cookies from "universal-cookie";
-
-const cookies = new Cookies();
+import CategoryAPI from "../lib/api/CategoryAPI";
 
 const SELECT = "category/SELECT";
 const LIST = "category/LIST";
 
 export const getCategoryList = () => async (dispatch) => {
-  const response = await axios.get(
-    `${process.env.REACT_APP_SERVER_URI}/category/list/all`,
-    {
-      headers: {
-        Authorization: cookies.get("colorit-accessToken"),
-      },
-    }
-  );
-  const data = response.data;
+  const data = await CategoryAPI.getCategoryList();
   dispatch({ type: LIST, payload: data.categories });
 };
 

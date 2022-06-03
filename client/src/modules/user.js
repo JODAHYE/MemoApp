@@ -1,5 +1,5 @@
-import axios from "axios";
 import Cookies from "universal-cookie";
+import AuthAPI from "../lib/api/AuthAPI";
 
 const cookies = new Cookies();
 
@@ -11,22 +11,18 @@ const initialState = {
 };
 
 export const login = (body) => async (dispatch) => {
-  const response = await axios.post(
-    `${process.env.REACT_APP_SERVER_URI}/user/login`,
-    body
-  );
-  const data = await response.data;
+  const data = await AuthAPI.login(body);
   if (!data.success) {
     return alert(data.msg);
   }
-  cookies.set("colorit-accessToken", response.data.accessToken, {
+  cookies.set("colorit-accessToken", data.accessToken, {
     path: "/",
     maxAge: 60 * 60 * 2,
   });
   dispatch({ type: LOGIN });
 };
 
-export const logout = (dispatch) => () => {
+export const logout = () => (dispatch) => {
   cookies.remove("colorit-accessToken");
   window.location.reload();
   dispatch({ type: LOGOUT });

@@ -9,7 +9,7 @@ import { setColor, setSkip } from "../modules/post";
 const MemoWrite = () => {
   const dispatch = useDispatch();
 
-  const { writeMemo } = usePost();
+  const { createMemo } = usePost();
 
   const { categories } = useSelector((state) => state.category);
 
@@ -31,54 +31,53 @@ const MemoWrite = () => {
     [value]
   );
 
-  const onColorClick = useCallback(
+  const selectMemoColor = useCallback(
     (e) => {
       setValue({ ...value, color: e.target.getAttribute("color") });
     },
     [value]
   );
 
-  const onSubmit = useCallback(
+  const selectCategory = useCallback(
+    (e) => {
+      setValue({ ...value, category: e.target.value });
+    },
+    [value]
+  );
+
+  const saveMemo = useCallback(
     (e) => {
       e.preventDefault();
       if (!value.title || !value.content) {
         return alert("Please enter a value");
       }
-      writeMemo(value);
+      createMemo(value);
       dispatch(setColor(""));
       dispatch(setSkip(0));
       dispatch(setCategory(""));
     },
-    [value, writeMemo]
+    [value, createMemo]
   );
 
   return (
     <Wrap>
       <Option color={value.color}>
-        <MemoColor color={customColor.red} onClick={onColorClick} />
-        <MemoColor color={customColor.yellow} onClick={onColorClick} />
-        <MemoColor color={customColor.purple} onClick={onColorClick} />
-        <MemoColorBasicBtn
-          onClick={() => {
-            setValue({ ...value, color: "#8C8C8C" });
-          }}
-        >
+        <MemoColor color={customColor.red} onClick={selectMemoColor} />
+        <MemoColor color={customColor.yellow} onClick={selectMemoColor} />
+        <MemoColor color={customColor.purple} onClick={selectMemoColor} />
+        <MemoColorBasicBtn color={"#8C8C8C"} onClick={selectMemoColor}>
           <Icon src="../../img/cancel-circle.svg" />
         </MemoColorBasicBtn>
-        <SelectBox
-          onChange={(e) => {
-            setValue({ ...value, category: e.target.value });
-          }}
-        >
+        <SelectBox onChange={selectCategory}>
           <CategorySelector value="">default</CategorySelector>
-          {categories.map((v, i) => (
-            <CategorySelector key={i} value={v.name}>
-              {v.name}
+          {categories.map((item, i) => (
+            <CategorySelector key={i} value={item.name}>
+              {item.name}
             </CategorySelector>
           ))}
         </SelectBox>
       </Option>
-      <Form onSubmit={onSubmit}>
+      <Form onSubmit={saveMemo}>
         <Title
           type="text"
           placeholder="Title"

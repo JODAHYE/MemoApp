@@ -14,7 +14,7 @@ const Login = () => {
     password: "",
   });
 
-  const onSubmit = useCallback(
+  const onLogin = useCallback(
     (e) => {
       e.preventDefault();
       dispatch(login(info));
@@ -29,10 +29,14 @@ const Login = () => {
     [info]
   );
 
+  const openSignupPopup = useCallback(() => {
+    setOnSignup(true);
+  }, []);
+
   return (
     <Wrap>
       <LogoImg src="../../img/logo.png" />
-      <Form onSubmit={onSubmit}>
+      <Form onSubmit={onLogin}>
         <Input type="text" name="id" placeholder="id" onChange={onChange} />
         <Input
           type="password"
@@ -43,13 +47,7 @@ const Login = () => {
         <LoginBtn>Login</LoginBtn>
       </Form>
       <p>Don't have an account?</p>
-      <SignupBtn
-        onClick={() => {
-          setOnSignup(true);
-        }}
-      >
-        Sign up
-      </SignupBtn>
+      <SignupBtn onClick={openSignupPopup}>Sign up</SignupBtn>
       {onSignup && <SignupPopup setOnSignup={setOnSignup} />}
     </Wrap>
   );

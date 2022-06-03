@@ -1,19 +1,19 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 import MemoDetailPopup from "./MemoDetailPopup";
 
 const MemoCard = ({ memo }) => {
   const [isDetailClick, setIsDetailClick] = useState(false);
 
+  const openDetailPopup = useCallback(() => {
+    setIsDetailClick(true);
+  }, []);
+
   return (
     <>
       <Wrap color={memo.color}>
         <Label>{memo.title}</Label>
-        <SeeDetailBtn
-          onClick={() => {
-            setIsDetailClick(true);
-          }}
-        >
+        <SeeDetailBtn onClick={openDetailPopup}>
           <Icon src="../../img/doc.svg" />
         </SeeDetailBtn>
         <Content>{memo.content}</Content>

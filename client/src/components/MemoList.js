@@ -1,6 +1,7 @@
 import React, { memo, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+
 import {
   setColor,
   getMemoList,
@@ -9,6 +10,7 @@ import {
 } from "../modules/post";
 import MemoCard from "./MemoCard";
 import { customColor } from "../style/theme";
+
 const MemoList = () => {
   const dispatch = useDispatch();
 
@@ -24,7 +26,7 @@ const MemoList = () => {
     }
   }, [skip, color, category]);
 
-  const onColorClick = useCallback((e) => {
+  const onColorFiltering = useCallback((e) => {
     dispatch(setSkip(0));
     dispatch(setColor(e.target.getAttribute("color")));
   }, []);
@@ -41,14 +43,14 @@ const MemoList = () => {
   return (
     <Wrap>
       <FilterBox>
-        <Color color={customColor.red} onClick={onColorClick} />
-        <Color color={customColor.yellow} onClick={onColorClick} />
-        <Color color={customColor.purple} onClick={onColorClick} />
+        <Color color={customColor.red} onClick={onColorFiltering} />
+        <Color color={customColor.yellow} onClick={onColorFiltering} />
+        <Color color={customColor.purple} onClick={onColorFiltering} />
       </FilterBox>
       <div>
         {memos &&
           memos.length > 0 &&
-          memos.map((v, i) => <MemoCard key={i} memo={v} />)}
+          memos.map((memo, i) => <MemoCard key={i} memo={memo} />)}
       </div>
       <Controll>
         <Btn onClick={onPrev}>

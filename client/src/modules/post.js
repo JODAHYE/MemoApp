@@ -1,53 +1,25 @@
-import axios from "axios";
-import Cookies from "universal-cookie";
-
-const cookies = new Cookies();
-
+import PostAPI from "../lib/api/PostAPI";
 const LIST = "post/LIST";
 const SET_COLOR = "post/SET_COLOR";
 const SET_SKIP = "post/SET_SKIP";
 const CATEGORY_FILTER_LIST = "post/CATEGORY_FILTER_LIST";
 
 export const getMemoList = (skip, color) => async (dispatch) => {
-  const response = await axios.get(
-    `${process.env.REACT_APP_SERVER_URI}/post/list`,
-    {
-      headers: {
-        Authorization: cookies.get("colorit-accessToken"),
-      },
-      params: {
-        skip,
-        color,
-      },
-    }
-  );
-  const data = await response.data;
+  const data = await PostAPI.getPostList(skip, color);
   if (!data.success) {
     alert(data.msg);
-    dispatch(setSkip(skip - 6));
+    if (skip > 0) {
+      dispatch(setSkip(skip - 6));
+    }
   }
   dispatch({ type: LIST, payload: data.posts });
 };
 
 export const getCategoryFilterList =
   (skip, category, color) => async (dispatch) => {
-    const response = await axios.get(
-      `${process.env.REACT_APP_SERVER_URI}/post/list/filter`,
-      {
-        headers: {
-          Authorization: cookies.get("colorit-accessToken"),
-        },
-        params: {
-          skip,
-          category,
-          color,
-        },
-      }
-    );
-    const data = await response.data;
+    const data = await PostAPI.getCategoryFilterList(skip, category, color);
     if (!data.success) {
       alert(data.msg);
-      dispatch(setSkip(skip - 6));
     }
     dispatch({ type: CATEGORY_FILTER_LIST, payload: data.posts });
   };

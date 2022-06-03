@@ -30,14 +30,14 @@ const SignupPopup = ({ setOnSignup }) => {
     [info, setOnSignup, signup]
   );
 
+  const cancelSignupPopup = useCallback(() => {
+    setOnSignup(false);
+  }, [setOnSignup]);
+
   return (
     <Wrap>
       <Title>Sign up</Title>
-      <CancelBtn
-        onClick={() => {
-          setOnSignup(false);
-        }}
-      >
+      <CancelBtn onClick={cancelSignupPopup}>
         <Icon src="../../img/cancel-circle.svg" />
       </CancelBtn>
       <Form onSubmit={onSubmit}>
@@ -80,6 +80,7 @@ const Wrap = styled.div`
   box-shadow: 0px 0px 1000px 1000px rgba(0, 0, 0, 0.5);
   background: #fff;
   padding: 20px;
+  border-radius: 10px;
   @media (min-width: 320px) and (max-width: 480px) {
     width: 80%;
     height: 50%;

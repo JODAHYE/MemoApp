@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { usePost } from "../hooks/usePost";
 import { customColor } from "../style/theme";
 
@@ -14,12 +14,7 @@ const MemoDetailPopup = ({ setIsDetailClick, memo }) => {
     content: memo.content,
   });
 
-  const colorArray = [
-    customColor.red,
-    customColor.yellow,
-    customColor.purple,
-    "#8C8C8C",
-  ];
+  const colorArray = [customColor.red, customColor.yellow, customColor.purple];
 
   const onDelete = useCallback(() => {
     deleteMemo(memo.title, memo._id, setIsDetailClick);

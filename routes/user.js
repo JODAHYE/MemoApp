@@ -24,9 +24,23 @@ userRouter.post("/login", (req, res) => {
         algorithm: "HS256",
         expiresIn: "2h",
       });
-      return res.status(200).json({ success: true, accessToken });
+      return res
+        .status(200)
+        .cookie("accessToken", accessToken, {
+          maxAge: 2 * 60 * 60 * 1000,
+          httpOnly: true,
+        })
+        .json({ success: true, userId: user.id });
     });
   });
+});
+
+userRouter.post("/logout", (req, res) => {
+  try {
+    res.clearCookie("accessToken");
+  } catch (error) {
+    if (err) return res.status(500).json({ success: false, msg: err });
+  }
 });
 
 userRouter.post("/signup", (req, res) => {

@@ -5,6 +5,7 @@ import { getCategoryList, setCategory } from "../modules/category";
 import { useCategory } from "../hooks/useCategory";
 import { getMemoList, setColor, setSkip } from "../modules/post";
 import { customColor } from "../style/theme";
+import { checkCorrect } from "../lib/checkCorrect";
 
 const Category = ({ isCategoryOpen, onCategoryToggle }) => {
   const dispatch = useDispatch();
@@ -29,26 +30,16 @@ const Category = ({ isCategoryOpen, onCategoryToggle }) => {
     setIsDeleteBtnClick(false);
   }, []);
 
-  const isCorrectName = () => {
-    for (let i = 0; i < value.length; i++) {
-      if (value.charCodeAt(i) >= 21 && value.charCodeAt(i) < 48) return false;
-      if (value.charCodeAt(i) >= 58 && value.charCodeAt(i) < 65) return false;
-      if (value.charCodeAt(i) >= 91 && value.charCodeAt(i) < 97) return false;
-      if (value.charCodeAt(i) >= 123 && value.charCodeAt(i) < 127) return false;
-    }
-    return true;
-  };
-
   const onCreate = useCallback(() => {
     if (!value) return;
-    if (!isCorrectName()) {
-      return alert("Special characters are not allowed");
+    if (!checkCorrect(value)) {
+      return alert("특수문자는 사용할수 없습니다.");
     }
     createCategory({ name: value }).then(() => {
       dispatch(getCategoryList());
       setValue("");
     });
-  }, [value, createCategory, isCorrectName]);
+  }, [value, createCategory]);
 
   const onDelete = useCallback(() => {
     deleteCategory(value).then(() => {
@@ -81,7 +72,7 @@ const Category = ({ isCategoryOpen, onCategoryToggle }) => {
           categories.map((item, i) => (
             <CategoryItem
               onClick={onCategoryClick}
-              key={i}
+              key={item.name + i}
               active={category === item.name && true}
             >
               {item.name}

@@ -6,16 +6,18 @@ import post from "./routes/post.js";
 import category from "./routes/category.js";
 import cors from "cors";
 import path from "path";
+import cookieParser from "cookie-parser";
 dotenv.config();
 const PORT = process.env.PORT || 5000;
 const app = express();
-app.use(cors({ origin: "http://localhost:3000" }));
+app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("연결"))
   .catch((e) => console.log(e));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use("/user", user);
 app.use("/post", post);
 app.use("/category", category);

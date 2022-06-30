@@ -7,7 +7,7 @@ const LOGIN = "user/LOGIN";
 const LOGOUT = "user/LOGOUT";
 
 const initialState = {
-  isLogin: cookies.get("colorit-accessToken") ? true : false,
+  isLogin: cookies.get("user") ? true : false,
 };
 
 export const login = (body) => async (dispatch) => {
@@ -15,15 +15,19 @@ export const login = (body) => async (dispatch) => {
   if (!data.success) {
     return alert(data.msg);
   }
-  cookies.set("colorit-accessToken", data.accessToken, {
+  cookies.set("user", data.userId, {
     path: "/",
     maxAge: 60 * 60 * 2,
   });
   dispatch({ type: LOGIN });
 };
 
-export const logout = () => (dispatch) => {
-  cookies.remove("colorit-accessToken");
+export const logout = () => async (dispatch) => {
+  cookies.remove("user");
+  const data = await AuthAPI.logout();
+  if (!data.success) {
+    return alert("로그아웃 실패");
+  }
   window.location.reload();
   dispatch({ type: LOGOUT });
 };

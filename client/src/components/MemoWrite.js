@@ -16,7 +16,7 @@ const MemoWrite = () => {
   const [value, setValue] = useState({
     title: "",
     content: "",
-    color: "#8C8C8C",
+    color: customColor.red,
     category: "",
   });
 
@@ -65,13 +65,10 @@ const MemoWrite = () => {
         <MemoColor color={customColor.red} onClick={selectMemoColor} />
         <MemoColor color={customColor.yellow} onClick={selectMemoColor} />
         <MemoColor color={customColor.purple} onClick={selectMemoColor} />
-        <MemoColorBasicBtn color={"#8C8C8C"} onClick={selectMemoColor}>
-          <Icon src="../../img/cancel-circle.svg" />
-        </MemoColorBasicBtn>
         <SelectBox onChange={selectCategory}>
           <CategorySelector value="">default</CategorySelector>
           {categories.map((item, i) => (
-            <CategorySelector key={i} value={item.name}>
+            <CategorySelector key={item.name + i} value={item.name}>
               {item.name}
             </CategorySelector>
           ))}
@@ -139,17 +136,6 @@ const MemoColor = styled.span`
   @media (min-width: 320px) and (max-width: 480px) {
     margin: 0 2px;
   }
-`;
-
-const MemoColorBasicBtn = styled.button`
-  cursor: pointer;
-  border: none;
-  background: none;
-  outline: none;
-`;
-
-const Icon = styled.img`
-  width: 20px;
 `;
 
 const SelectBox = styled.select`

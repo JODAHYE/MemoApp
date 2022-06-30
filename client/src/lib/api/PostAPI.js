@@ -5,14 +5,12 @@ const cookies = new Cookies();
 
 const axiosInstance = Axios.create({
   baseURL: `${process.env.REACT_APP_SERVER_URI}/post`,
+  withCredentials: true,
 });
 
 const PostAPI = {
   getPostList: async (skip, color) => {
     const response = await axiosInstance.get("/list", {
-      headers: {
-        Authorization: cookies.get("colorit-accessToken"),
-      },
       params: { skip, color },
     });
     const data = await response.data;
@@ -21,9 +19,6 @@ const PostAPI = {
 
   getCategoryFilterList: async (skip, category, color) => {
     const response = await axiosInstance.get("/list/filter", {
-      headers: {
-        Authorization: cookies.get("colorit-accessToken"),
-      },
       params: {
         skip,
         category,
@@ -35,20 +30,13 @@ const PostAPI = {
   },
 
   createPost: async (body) => {
-    const response = await axiosInstance.post("/save", body, {
-      headers: {
-        Authorization: cookies.get("colorit-accessToken"),
-      },
-    });
+    const response = await axiosInstance.post("/save", body);
     const data = await response.data;
     return data;
   },
 
   deletePost: async (postId) => {
     const response = await axiosInstance.delete("/delete", {
-      headers: {
-        Authorization: cookies.get("colorit-accessToken"),
-      },
       params: {
         postId,
       },
@@ -58,11 +46,7 @@ const PostAPI = {
   },
 
   updatePost: async (body) => {
-    const response = await axiosInstance.post("/update", body, {
-      headers: {
-        Authorization: cookies.get("colorit-accessToken"),
-      },
-    });
+    const response = await axiosInstance.post("/update", body);
     const data = await response.data;
     return data;
   },

@@ -67,7 +67,6 @@ postRouter.get("/list", authMiddleware, (req, res) => {
 
 postRouter.get("/list/filter", authMiddleware, (req, res) => {
   const skip = parseInt(req.query.skip);
-  console.log(req.query);
   if (req.query.color) {
     Category.findOne({
       userId: req.user.objectId,

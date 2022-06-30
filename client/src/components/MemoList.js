@@ -50,7 +50,7 @@ const MemoList = () => {
       <div>
         {memos &&
           memos.length > 0 &&
-          memos.map((memo, i) => <MemoCard key={i} memo={memo} />)}
+          memos.map((memo, i) => <MemoCard key={memo.date + i} memo={memo} />)}
       </div>
       <Controll>
         <Btn onClick={onPrev}>

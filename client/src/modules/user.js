@@ -28,7 +28,6 @@ export const logout = () => async (dispatch) => {
   if (!data.success) {
     return alert("로그아웃 실패");
   }
-  window.location.reload();
   dispatch({ type: LOGOUT });
 };
 

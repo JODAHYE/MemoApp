@@ -38,8 +38,9 @@ userRouter.post("/login", (req, res) => {
 userRouter.post("/logout", (req, res) => {
   try {
     res.clearCookie("accessToken");
+    return res.status(200).json({ success: true });
   } catch (error) {
-    if (err) return res.status(500).json({ success: false, msg: err });
+    return res.status(500).json({ success: false, msg: err });
   }
 });
 
